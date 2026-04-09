@@ -1,33 +1,304 @@
-<section class="why-choose" style="background: {{ section.settings.bg_color }};">
-  <div class="container">
-    <h2 class="section-heading">{{ section.settings.heading }}</h2>
-    <div class="why-choose-grid">
-      {% for block in section.blocks %}
-        <div class="why-choose-card" {{ block.shopify_attributes }}>
-          <div class="why-choose-icon">{{ block.settings.icon }}</div>
-          <h3 class="why-choose-title">{{ block.settings.title }}</h3>
-          <p class="why-choose-desc">{{ block.settings.description }}</p>
-        </div>
-      {% endfor %}
-    </div>
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    --section-padding-top: {{ section.settings.padding_top }}px;
+    --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --section-bg-color: {{ section.settings.bg_color }};
+    --section-heading-size: {{ section.settings.heading_size }}px;
+    --section-columns: {{ section.settings.columns }};
+    --section-icon-color: {{ section.settings.icon_color }};
+    --section-icon-size: {{ section.settings.icon_size }}px;
+    --section-card-bg: {{ section.settings.card_bg }};
+    --section-card-border: {{ section.settings.card_border }};
+    --section-card-radius: {{ section.settings.card_radius }}px;
+  }
+{%- endstyle -%}
+
+<section
+  id="shopify-section-{{ section.id }}"
+  class="section-padding color-{{ section.settings.color_scheme }}"
+  style="background-color: var(--section-bg-color);"
+>
+  <div class="page-width">
+    {%- if section.settings.heading != blank or section.settings.description != blank -%}
+      <div class="why-choose__header">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="why-choose__heading" style="font-size: var(--section-heading-size);">
+            {{ section.settings.heading | escape }}
+          </h2>
+        {%- endif -%}
+        {%- if section.settings.description != blank -%}
+          <p class="why-choose__description">
+            {{ section.settings.description | escape }}
+          </p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="why-choose__grid" role="list">
+        {%- for block in section.blocks -%}
+          <article
+            class="why-choose__card"
+            style="
+              margin-top: {{ block.settings.margin_top }}px;
+              margin-bottom: {{ block.settings.margin_bottom }}px;
+            "
+            role="listitem"
+            {{ block.shopify_attributes }}
+          >
+            <div class="why-choose__icon" aria-hidden="true">
+              {%- if block.settings.icon != blank -%}
+                <img
+                  src="{{ block.settings.icon | image_url: width: 120 }}"
+                  alt=""
+                  width="{{ section.settings.icon_size }}"
+                  height="{{ section.settings.icon_size }}"
+                  loading="lazy"
+                >
+              {%- else -%}
+                {% render 'icon-checkmark' %}
+              {%- endif -%}
+            </div>
+
+            {%- if block.settings.title != blank -%}
+              <h3 class="why-choose__title">
+                {{ block.settings.title | escape }}
+              </h3>
+            {%- endif -%}
+
+            {%- if block.settings.description != blank -%}
+              <p class="why-choose__desc">
+                {{ block.settings.description }}
+              </p>
+            {%- endif -%}
+          </article>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
   </div>
 </section>
+
+<style>
+  #shopify-section-{{ section.id }} .section-padding {
+    padding-top: var(--section-padding-top);
+    padding-bottom: var(--section-padding-bottom);
+  }
+
+  #shopify-section-{{ section.id }} .why-choose__header {
+    text-align: center;
+    margin-bottom: 48px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #shopify-section-{{ section.id }} .why-choose__heading {
+    color: var(--color-foreground, #FFFFFF);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    margin: 0 0 16px;
+  }
+
+  #shopify-section-{{ section.id }} .why-choose__description {
+    color: var(--color-foreground, #FFFFFF);
+    opacity: 0.65;
+    font-size: 16px;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .why-choose__grid {
+    display: grid;
+    grid-template-columns: repeat(var(--section-columns, 4), 1fr);
+    gap: 24px;
+  }
+
+  #shopify-section-{{ section.id }} .why-choose__card {
+    background-color: var(--section-card-bg, #1a1a1a);
+    border: 1px solid var(--section-card-border, rgba(255,255,255,0.08));
+    border-radius: var(--section-card-radius, 12px);
+    padding: 32px 24px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  #shopify-section-{{ section.id }} .why-choose__card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+  }
+
+  #shopify-section-{{ section.id }} .why-choose__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--section-icon-size, 48px);
+    height: var(--section-icon-size, 48px);
+    margin: 0 auto 20px;
+    color: var(--section-icon-color, #D4A843);
+  }
+
+  #shopify-section-{{ section.id }} .why-choose__icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  #shopify-section-{{ section.id }} .why-choose__icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  #shopify-section-{{ section.id }} .why-choose__title {
+    color: var(--color-foreground, #FFFFFF);
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 12px;
+    line-height: 1.3;
+  }
+
+  #shopify-section-{{ section.id }} .why-choose__desc {
+    color: var(--color-foreground, #FFFFFF);
+    opacity: 0.65;
+    font-size: 14px;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  @media screen and (max-width: 989px) {
+    #shopify-section-{{ section.id }} .why-choose__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section.id }} .why-choose__grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    #shopify-section-{{ section.id }} .why-choose__heading {
+      font-size: calc(var(--section-heading-size) * 0.7) !important;
+    }
+
+    #shopify-section-{{ section.id }} .why-choose__card {
+      padding: 24px 20px;
+    }
+  }
+</style>
 
 {% schema %}
 {
   "name": "Neden Biz?",
+  "tag": "section",
+  "class": "section-why-choose",
   "settings": [
     {
       "type": "text",
       "id": "heading",
-      "label": "Başlık",
-      "default": "Neden BASED?"
+      "label": "Baslik",
+      "default": "Neden Bizi Secmelisiniz?"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Baslik Boyutu",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Aciklama",
+      "default": "Urunlerimizi ozel kilan sebepler"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Sutun Sayisi",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Ikon Rengi",
+      "default": "#D4A843"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Ikon Boyutu",
+      "min": 24,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Kart Arka Plan",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "card_border",
+      "label": "Kart Cerceve Rengi",
+      "default": "#262626"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Kart Kose Yuvarlama",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Renk Semasi",
+      "options": [
+        { "value": "scheme-1", "label": "Sema 1" },
+        { "value": "scheme-2", "label": "Sema 2" },
+        { "value": "scheme-3", "label": "Sema 3" },
+        { "value": "inverse", "label": "Ters" }
+      ],
+      "default": "scheme-1"
     },
     {
       "type": "color",
       "id": "bg_color",
       "label": "Arka Plan Rengi",
       "default": "#141414"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Ust Bosluk",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Alt Bosluk",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
     }
   ],
   "blocks": [
@@ -36,22 +307,41 @@
       "name": "Neden",
       "settings": [
         {
-          "type": "text",
+          "type": "image_picker",
           "id": "icon",
-          "label": "İkon (Emoji)",
-          "default": "🌿"
+          "label": "Ikon Gorseli"
         },
         {
           "type": "text",
           "id": "title",
-          "label": "Başlık",
-          "default": "Doğal Formül"
+          "label": "Baslik",
+          "default": "Dogal Formul"
         },
         {
           "type": "textarea",
           "id": "description",
-          "label": "Açıklama",
-          "default": "Zararlı kimyasallar içermeyen, doğal içeriklerle zenginleştirilmiş formül."
+          "label": "Aciklama",
+          "default": "Zararli kimyasallar icermeyen, dogal iceriklerle zenginlestirilmis formul."
+        },
+        {
+          "type": "range",
+          "id": "margin_top",
+          "label": "Ust Kenar Boslugu",
+          "min": 0,
+          "max": 30,
+          "step": 2,
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "margin_bottom",
+          "label": "Alt Kenar Boslugu",
+          "min": 0,
+          "max": 30,
+          "step": 2,
+          "unit": "px",
+          "default": 0
         }
       ]
     }
@@ -60,10 +350,10 @@
     {
       "name": "Neden Biz?",
       "blocks": [
-        { "type": "reason", "settings": { "icon": "🌿", "title": "Doğal Formül", "description": "Zararlı kimyasallar içermeyen, doğal içeriklerle zenginleştirilmiş formül." } },
-        { "type": "reason", "settings": { "icon": "🧪", "title": "Bilimsel Yaklaşım", "description": "Her ürün dermatologlar tarafından test edilmiş ve onaylanmıştır." } },
-        { "type": "reason", "settings": { "icon": "♻️", "title": "Sürdürülebilir", "description": "Çevre dostu ambalaj ve sürdürülebilir üretim süreçleri." } },
-        { "type": "reason", "settings": { "icon": "🇹🇷", "title": "Yerli Üretim", "description": "Türkiye'de üretilen, uluslararası standartlarda kalite." } }
+        { "type": "reason", "settings": { "title": "Dogal Formul", "description": "Zararli kimyasallar icermeyen, dogal iceriklerle zenginlestirilmis formul." } },
+        { "type": "reason", "settings": { "title": "Bilimsel Yaklasim", "description": "Her urun dermatologlar tarafindan test edilmis ve onaylanmistir." } },
+        { "type": "reason", "settings": { "title": "Surdurulebilir", "description": "Cevre dostu ambalaj ve surdurulebilir uretim surecleri." } },
+        { "type": "reason", "settings": { "title": "Yerli Uretim", "description": "Turkiye'de uretilen, uluslararasi standartlarda kalite." } }
       ]
     }
   ]

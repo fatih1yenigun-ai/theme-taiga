@@ -1,0 +1,111 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} section-{{ section.id }}-padding" style="background-color: #0a0a0a; color: #FFFFFF;">
+  <div class="collection-banner" style="position: relative; overflow: hidden;">
+    {%- if section.settings.show_image and collection.image -%}
+      <div class="collection-banner__image" style="position: relative; height: {{ section.settings.image_height }}px; overflow: hidden;">
+        <img
+          src="{{ collection.image | image_url: width: 1920 }}"
+          alt="{{ collection.image.alt | escape }}"
+          loading="eager"
+          style="width: 100%; height: 100%; object-fit: cover; display: block;"
+        >
+        <div class="collection-banner__overlay" style="position: absolute; inset: 0; background: rgba(0, 0, 0, {{ section.settings.overlay_opacity | divided_by: 100.0 }});"></div>
+        <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px;">
+          <{{ section.settings.heading_size }} style="margin: 0 0 12px 0; font-size: {% if section.settings.heading_size == 'h1' %}2.5rem{% else %}2rem{% endif %}; font-weight: 700; color: #FFFFFF;">
+            {{ collection.title }}
+          </{{ section.settings.heading_size }}>
+          {%- if collection.description != blank -%}
+            <p style="max-width: 640px; margin: 0; font-size: 1rem; line-height: 1.6; color: rgba(255,255,255,0.8);">{{ collection.description }}</p>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- else -%}
+      <div style="text-align: center; padding: 40px 20px;">
+        <{{ section.settings.heading_size }} style="margin: 0 0 12px 0; font-size: {% if section.settings.heading_size == 'h1' %}2.5rem{% else %}2rem{% endif %}; font-weight: 700; color: #FFFFFF;">
+          {{ collection.title }}
+        </{{ section.settings.heading_size }}>
+        {%- if collection.description != blank -%}
+          <p style="max-width: 640px; margin: 12px auto 0; font-size: 1rem; line-height: 1.6; color: rgba(255,255,255,0.7);">{{ collection.description }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Koleksiyon Başlığı",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "default": true,
+      "label": "Koleksiyon görselini göster"
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "min": 150,
+      "max": 400,
+      "step": 10,
+      "default": 300,
+      "unit": "px",
+      "label": "Görsel yüksekliği"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 40,
+      "unit": "%",
+      "label": "Kaplama opaklığı"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" }
+      ],
+      "default": "h1",
+      "label": "Başlık boyutu"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Renk şeması",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "label": "Üst boşluk"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "label": "Alt boşluk"
+    }
+  ]
+}
+{% endschema %}

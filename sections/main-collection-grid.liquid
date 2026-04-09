@@ -1,0 +1,160 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  .collection-grid-{{ section.id }} {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr);
+    gap: 20px;
+  }
+  @media (min-width: 750px) {
+    .collection-grid-{{ section.id }} {
+      grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+      gap: 24px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} section-{{ section.id }}-padding" style="background-color: #0a0a0a; color: #FFFFFF;">
+  <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+    {%- paginate collection.products by section.settings.products_per_page -%}
+      <div class="collection-grid-{{ section.id }}">
+        {%- for product in collection.products -%}
+          {% render 'card-product',
+            card_product: product,
+            show_vendor: section.settings.show_vendor,
+            show_price: section.settings.show_price,
+            show_rating: section.settings.show_rating,
+            image_ratio: section.settings.image_ratio
+          %}
+        {%- else -%}
+          <p style="grid-column: 1 / -1; text-align: center; color: rgba(255,255,255,0.6); padding: 40px 0;">
+            Bu koleksiyonda henüz ürün bulunmamaktadır.
+          </p>
+        {%- endfor -%}
+      </div>
+
+      {%- if paginate.pages > 1 -%}
+        <nav style="display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 48px; flex-wrap: wrap;">
+          {%- if paginate.previous -%}
+            <a href="{{ paginate.previous.url }}" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #FFFFFF; text-decoration: none; transition: border-color 0.2s;">
+              &laquo;
+            </a>
+          {%- endif -%}
+
+          {%- for part in paginate.parts -%}
+            {%- if part.is_link -%}
+              <a href="{{ part.url }}" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #FFFFFF; text-decoration: none; transition: border-color 0.2s;">
+                {{ part.title }}
+              </a>
+            {%- else -%}
+              <span style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: #FFFFFF; color: #0a0a0a; border-radius: 8px; font-weight: 600;">
+                {{ part.title }}
+              </span>
+            {%- endif -%}
+          {%- endfor -%}
+
+          {%- if paginate.next -%}
+            <a href="{{ paginate.next.url }}" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #FFFFFF; text-decoration: none; transition: border-color 0.2s;">
+              &raquo;
+            </a>
+          {%- endif -%}
+        </nav>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Ürün Izgarası",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 16,
+      "label": "Sayfa başına ürün"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4,
+      "label": "Masaüstü sütun sayısı"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "options": [
+        { "value": "1", "label": "1 sütun" },
+        { "value": "2", "label": "2 sütun" }
+      ],
+      "default": "2",
+      "label": "Mobil sütun sayısı"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": false,
+      "label": "Üreticiyi göster"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price",
+      "default": true,
+      "label": "Fiyatı göster"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "default": false,
+      "label": "Değerlendirmeyi göster"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        { "value": "adapt", "label": "Görsele uyarla" },
+        { "value": "portrait", "label": "Dikey (2:3)" },
+        { "value": "square", "label": "Kare (1:1)" }
+      ],
+      "default": "adapt",
+      "label": "Görsel oranı"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Renk şeması",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 36,
+      "unit": "px",
+      "label": "Üst boşluk"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 36,
+      "unit": "px",
+      "label": "Alt boşluk"
+    }
+  ]
+}
+{% endschema %}

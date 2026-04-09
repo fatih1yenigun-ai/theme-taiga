@@ -2,35 +2,34 @@
   "sections": {
     "product-main": {
       "type": "product-main",
-      "settings": {
-        "show_subtitle": true,
-        "subtitle": "",
-        "show_rating": true,
-        "rating": 5,
-        "review_count": "0",
-        "add_to_cart_text": "SEPETE EKLE",
-        "show_buy_now": true,
-        "buy_now_text": "HEMEN SATIN AL",
-        "show_trust_badges": true
-      },
       "blocks": {
-        "badge-1": { "type": "trust_badge", "settings": { "icon": "🚚", "label": "Ücretsiz Kargo" } },
-        "badge-2": { "type": "trust_badge", "settings": { "icon": "↩️", "label": "30 Gün İade" } },
-        "badge-3": { "type": "trust_badge", "settings": { "icon": "🔒", "label": "Güvenli Ödeme" } }
+        "title": { "type": "title", "settings": { "heading_size": "h1" } },
+        "rating": { "type": "rating_stars", "settings": { "rating": 5, "review_count": "0" } },
+        "price": { "type": "price", "settings": { "show_badges": true } },
+        "variant-picker": { "type": "variant_picker", "settings": { "picker_type": "pills" } },
+        "buy-buttons": { "type": "buy_buttons", "settings": { "add_to_cart_text": "SEPETE EKLE", "show_buy_now": true, "buy_now_text": "HEMEN SATIN AL" } },
+        "description": { "type": "description", "settings": {} }
       },
-      "block_order": ["badge-1", "badge-2", "badge-3"]
+      "block_order": ["title", "rating", "price", "variant-picker", "buy-buttons", "description"]
     },
     "product-icons-bar": {
-      "type": "product-icons-bar"
+      "type": "product-icons-bar",
+      "blocks": {
+        "i-1": { "type": "icon", "settings": { "label": "Doğal İçerik" } },
+        "i-2": { "type": "icon", "settings": { "label": "Hızlı Kargo" } },
+        "i-3": { "type": "icon", "settings": { "label": "Kolay İade" } },
+        "i-4": { "type": "icon", "settings": { "label": "Güvenli Ödeme" } }
+      },
+      "block_order": ["i-1", "i-2", "i-3", "i-4"]
     },
     "product-reviews": {
       "type": "product-reviews",
-      "settings": {
-        "heading": "Müşteri Değerlendirmeleri",
-        "show_summary": true,
-        "bg_color": "#0a0a0a"
-      }
+      "settings": { "heading": "Müşteri Değerlendirmeleri", "show_summary": true }
+    },
+    "related-products": {
+      "type": "related-products",
+      "settings": { "heading": "Bunları da Beğenebilirsiniz" }
     }
   },
-  "order": ["product-main", "product-icons-bar", "product-reviews"]
+  "order": ["product-main", "product-icons-bar", "product-reviews", "related-products"]
 }

@@ -1,0 +1,172 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} section-{{ section.id }}-padding" style="background-color: #0a0a0a; color: #FFFFFF;">
+  <div style="max-width: 740px; margin: 0 auto; padding: 0 20px;">
+    <article>
+      {%- if section.settings.show_image and article.image -%}
+        <div style="margin-bottom: 32px; border-radius: 12px; overflow: hidden;">
+          <img
+            src="{{ article.image | image_url: width: 1200 }}"
+            alt="{{ article.image.alt | escape }}"
+            loading="eager"
+            style="width: 100%; height: auto; display: block;"
+          >
+        </div>
+      {%- endif -%}
+
+      <header style="margin-bottom: 32px;">
+        <h1 style="margin: 0 0 16px 0; font-size: 2.25rem; font-weight: 700; line-height: 1.2; color: #FFFFFF;">{{ article.title }}</h1>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 16px; font-size: 0.85rem; color: rgba(255,255,255,0.5);">
+          {%- if section.settings.show_date -%}
+            <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: '%d %B %Y' }}</time>
+          {%- endif -%}
+          {%- if section.settings.show_author -%}
+            <span>{{ article.author }}</span>
+          {%- endif -%}
+        </div>
+      </header>
+
+      <div class="rte" style="color: rgba(255,255,255,0.85); line-height: 1.8; font-size: 1.05rem;">
+        {{ article.content }}
+      </div>
+
+      {%- if section.settings.show_share -%}
+        <div style="margin-top: 40px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1);">
+          <span style="font-size: 0.85rem; color: rgba(255,255,255,0.5); margin-right: 12px;">Paylaş:</span>
+          <a href="https://twitter.com/intent/tweet?text={{ article.title | url_encode }}&url={{ shop.url }}{{ article.url }}" target="_blank" rel="noopener" style="color: #FFFFFF; text-decoration: none; margin-right: 12px; font-size: 0.85rem;">Twitter</a>
+          <a href="https://www.facebook.com/sharer/sharer.php?u={{ shop.url }}{{ article.url }}" target="_blank" rel="noopener" style="color: #FFFFFF; text-decoration: none; margin-right: 12px; font-size: 0.85rem;">Facebook</a>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.show_comments and blog.comments_enabled? -%}
+        <div style="margin-top: 48px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.1);">
+          <h2 style="margin: 0 0 24px 0; font-size: 1.5rem; font-weight: 600; color: #FFFFFF;">
+            Yorumlar ({{ article.comments_count }})
+          </h2>
+
+          {%- for comment in article.comments -%}
+            <div style="padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                <strong style="color: #FFFFFF; font-size: 0.9rem;">{{ comment.author }}</strong>
+                <time style="font-size: 0.8rem; color: rgba(255,255,255,0.4);">{{ comment.created_at | date: '%d.%m.%Y' }}</time>
+              </div>
+              <p style="margin: 0; font-size: 0.9rem; line-height: 1.6; color: rgba(255,255,255,0.7);">{{ comment.content }}</p>
+            </div>
+          {%- endfor -%}
+
+          {% form 'new_comment', article %}
+            <div style="margin-top: 32px;">
+              <h3 style="margin: 0 0 16px 0; font-size: 1.1rem; font-weight: 600; color: #FFFFFF;">Yorum Yaz</h3>
+
+              {%- if form.errors -%}
+                <div style="padding: 12px; margin-bottom: 16px; background: rgba(220,38,38,0.15); border: 1px solid rgba(220,38,38,0.3); border-radius: 8px; color: #fca5a5; font-size: 0.85rem;">
+                  {{ form.errors | default_errors }}
+                </div>
+              {%- endif -%}
+
+              {%- if form.posted_successfully? -%}
+                <div style="padding: 12px; margin-bottom: 16px; background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.3); border-radius: 8px; color: #86efac; font-size: 0.85rem;">
+                  Yorumunuz başarıyla gönderildi.
+                </div>
+              {%- endif -%}
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                <div>
+                  <label for="comment-author" style="display: block; margin-bottom: 4px; font-size: 0.85rem; color: rgba(255,255,255,0.6);">Ad</label>
+                  <input type="text" name="comment[author]" id="comment-author" required style="width: 100%; padding: 10px 14px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; color: #FFFFFF; font-size: 0.9rem; outline: none; box-sizing: border-box;">
+                </div>
+                <div>
+                  <label for="comment-email" style="display: block; margin-bottom: 4px; font-size: 0.85rem; color: rgba(255,255,255,0.6);">E-posta</label>
+                  <input type="email" name="comment[email]" id="comment-email" required style="width: 100%; padding: 10px 14px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; color: #FFFFFF; font-size: 0.9rem; outline: none; box-sizing: border-box;">
+                </div>
+              </div>
+              <div style="margin-bottom: 12px;">
+                <label for="comment-body" style="display: block; margin-bottom: 4px; font-size: 0.85rem; color: rgba(255,255,255,0.6);">Yorum</label>
+                <textarea name="comment[body]" id="comment-body" rows="4" required style="width: 100%; padding: 10px 14px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; color: #FFFFFF; font-size: 0.9rem; outline: none; resize: vertical; box-sizing: border-box;"></textarea>
+              </div>
+              <button type="submit" style="padding: 12px 28px; background: #FFFFFF; color: #0a0a0a; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: opacity 0.2s;">
+                Gönder
+              </button>
+            </div>
+          {% endform %}
+        </div>
+      {%- endif -%}
+    </article>
+
+    <div style="margin-top: 40px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1);">
+      <a href="{{ blog.url }}" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.9rem;">&larr; {{ blog.title }} sayfasına dön</a>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Blog Yazısı",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "default": true,
+      "label": "Görseli göster"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "default": true,
+      "label": "Tarihi göster"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "default": true,
+      "label": "Yazarı göster"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_share",
+      "default": true,
+      "label": "Paylaşım bağlantılarını göster"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_comments",
+      "default": true,
+      "label": "Yorumları göster"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Renk şeması",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 48,
+      "unit": "px",
+      "label": "Üst boşluk"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 48,
+      "unit": "px",
+      "label": "Alt boşluk"
+    }
+  ]
+}
+{% endschema %}

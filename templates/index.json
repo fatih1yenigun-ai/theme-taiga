@@ -1,12 +1,78 @@
 {
   "sections": {
+    "slideshow-hero": {
+      "type": "slideshow-hero",
+      "blocks": {
+        "slide-1": {
+          "type": "slide",
+          "settings": {
+            "heading": "Premium Erkek Bakım",
+            "prefix": "BASED BODYWORKS",
+            "button_1_label": "ÜRÜNLERE GÖZ AT",
+            "overlay_opacity": 40
+          }
+        }
+      },
+      "block_order": ["slide-1"]
+    },
     "social-proof": {
       "type": "social-proof",
+      "blocks": {
+        "feat-1": { "type": "feature", "settings": { "text": "%100 Doğal İçerik" } },
+        "feat-2": { "type": "feature", "settings": { "text": "Sülfat & Paraben İçermez" } },
+        "feat-3": { "type": "feature", "settings": { "text": "Dermatolog Onaylı" } }
+      },
+      "block_order": ["feat-1", "feat-2", "feat-3"]
+    },
+    "featured-collection": {
+      "type": "featured-collection",
       "settings": {
-        "number": "3.000.000+",
-        "label": "Mutlu Müşteri"
+        "heading": "En Çok Satanlar",
+        "products_to_show": 4,
+        "columns_desktop": 4
+      }
+    },
+    "image-with-text": {
+      "type": "image-with-text",
+      "settings": {}
+    },
+    "why-choose": {
+      "type": "why-choose",
+      "blocks": {
+        "r-1": { "type": "reason", "settings": { "title": "Doğal Formül", "description": "Zararlı kimyasallar içermeyen, doğal içeriklerle zenginleştirilmiş." } },
+        "r-2": { "type": "reason", "settings": { "title": "Bilimsel Yaklaşım", "description": "Dermatologlar tarafından test edilmiş ve onaylanmıştır." } },
+        "r-3": { "type": "reason", "settings": { "title": "Sürdürülebilir", "description": "Çevre dostu ambalaj ve sürdürülebilir üretim." } },
+        "r-4": { "type": "reason", "settings": { "title": "Hızlı Kargo", "description": "Siparişleriniz 1-3 iş günü içinde kapınızda." } }
+      },
+      "block_order": ["r-1", "r-2", "r-3", "r-4"]
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "settings": {
+        "heading": "Müşterilerimiz Ne Diyor?"
+      },
+      "blocks": {
+        "t-1": { "type": "testimonial", "settings": { "rating": 5, "text": "<p>Saçlarıma inanılmaz doku ve hacim veriyor. Kesinlikle tavsiye ederim.</p>", "author": "Ahmet K." } },
+        "t-2": { "type": "testimonial", "settings": { "rating": 5, "text": "<p>Doğal içerikleri sayesinde saçım çok daha sağlıklı görünüyor.</p>", "author": "Mehmet Y." } },
+        "t-3": { "type": "testimonial", "settings": { "rating": 4, "text": "<p>Kokusu harika ve gün boyu kalıcı. Çok memnunum.</p>", "author": "Burak S." } }
+      },
+      "block_order": ["t-1", "t-2", "t-3"]
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "heading": "Bültene Abone Olun",
+        "description": "<p>İndirimler ve yeni ürünlerden ilk siz haberdar olun.</p>"
       }
     }
   },
-  "order": ["social-proof"]
+  "order": [
+    "slideshow-hero",
+    "social-proof",
+    "featured-collection",
+    "image-with-text",
+    "why-choose",
+    "testimonials",
+    "newsletter"
+  ]
 }

@@ -1,65 +1,342 @@
-<section class="social-proof" style="background: {{ section.settings.bg_color }};">
-  <div class="container">
-    <div class="social-proof-number">{{ section.settings.number }}</div>
-    <div class="social-proof-label">{{ section.settings.label }}</div>
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    --section-padding-top: {{ section.settings.padding_top }}px;
+    --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --section-bg-color: {{ section.settings.bg_color }};
+    --section-number-color: {{ section.settings.number_color }};
+    --section-number-size: {{ section.settings.number_size }}px;
+    --section-label-size: {{ section.settings.label_size }}px;
+  }
+{%- endstyle -%}
 
-    {% if section.blocks.size > 0 %}
-      <div class="social-proof-features">
-        {% for block in section.blocks %}
-          <div class="social-proof-feature" {{ block.shopify_attributes }}>
-            <span class="checkmark">✓</span>
-            <span>{{ block.settings.text }}</span>
-          </div>
-        {% endfor %}
-      </div>
-    {% endif %}
+<section
+  id="shopify-section-{{ section.id }}"
+  class="section-padding color-{{ section.settings.color_scheme }}"
+  style="background-color: var(--section-bg-color);"
+  aria-label="{{ section.settings.label | escape }}"
+>
+  <div class="page-width">
+    <div class="social-proof__container">
+      {%- if section.settings.number != blank -%}
+        <div class="social-proof__number" style="color: var(--section-number-color); font-size: var(--section-number-size);">
+          {{ section.settings.number | escape }}
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.label != blank -%}
+        <div class="social-proof__label" style="font-size: var(--section-label-size);">
+          {{ section.settings.label | escape }}
+        </div>
+      {%- endif -%}
+
+      {%- assign stats = section.blocks | where: "type", "stat" -%}
+      {%- if stats.size > 0 -%}
+        <div class="social-proof__stats">
+          {%- for block in stats -%}
+            <div
+              class="social-proof__stat"
+              style="margin-top: {{ block.settings.margin_top }}px; margin-bottom: {{ block.settings.margin_bottom }}px;"
+              {{ block.shopify_attributes }}
+            >
+              <span class="social-proof__stat-number">{{ block.settings.number | escape }}</span>
+              <span class="social-proof__stat-label">{{ block.settings.label | escape }}</span>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- assign features = section.blocks | where: "type", "feature" -%}
+      {%- if features.size > 0 -%}
+        <ul class="social-proof__features" role="list">
+          {%- for block in features -%}
+            <li
+              class="social-proof__feature"
+              style="margin-top: {{ block.settings.margin_top }}px; margin-bottom: {{ block.settings.margin_bottom }}px;"
+              {{ block.shopify_attributes }}
+            >
+              <span class="social-proof__checkmark" aria-hidden="true">
+                {% render 'icon-checkmark' %}
+              </span>
+              <span>{{ block.settings.text | escape }}</span>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
   </div>
 </section>
 
+<style>
+  #shopify-section-{{ section.id }} .section-padding {
+    padding-top: var(--section-padding-top);
+    padding-bottom: var(--section-padding-bottom);
+  }
+
+  #shopify-section-{{ section.id }} .social-proof__container {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  #shopify-section-{{ section.id }} .social-proof__number {
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+
+  #shopify-section-{{ section.id }} .social-proof__label {
+    color: var(--color-foreground, #FFFFFF);
+    opacity: 0.7;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 40px;
+  }
+
+  #shopify-section-{{ section.id }} .social-proof__stats {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+
+  #shopify-section-{{ section.id }} .social-proof__stat {
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .social-proof__stat-number {
+    display: block;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--section-number-color, #D4A843);
+    letter-spacing: -0.02em;
+  }
+
+  #shopify-section-{{ section.id }} .social-proof__stat-label {
+    display: block;
+    font-size: 14px;
+    color: var(--color-foreground, #FFFFFF);
+    opacity: 0.7;
+    margin-top: 4px;
+  }
+
+  #shopify-section-{{ section.id }} .social-proof__features {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .social-proof__feature {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--color-foreground, #FFFFFF);
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  #shopify-section-{{ section.id }} .social-proof__checkmark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background-color: var(--section-number-color, #D4A843);
+    color: var(--section-bg-color, #0a0a0a);
+    flex-shrink: 0;
+  }
+
+  #shopify-section-{{ section.id }} .social-proof__checkmark svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section.id }} .social-proof__number {
+      font-size: calc(var(--section-number-size) * 0.6) !important;
+    }
+
+    #shopify-section-{{ section.id }} .social-proof__stats {
+      gap: 24px;
+    }
+
+    #shopify-section-{{ section.id }} .social-proof__features {
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+  }
+</style>
+
 {% schema %}
 {
-  "name": "Sosyal Kanıt",
+  "name": "Sosyal Kanit",
+  "tag": "section",
+  "class": "section-social-proof",
   "settings": [
     {
       "type": "text",
       "id": "number",
-      "label": "Büyük Sayı",
+      "label": "Buyuk Sayi",
       "default": "3.000.000+"
+    },
+    {
+      "type": "range",
+      "id": "number_size",
+      "label": "Sayi Boyutu",
+      "min": 40,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    },
+    {
+      "type": "color",
+      "id": "number_color",
+      "label": "Sayi Rengi",
+      "default": "#D4A843"
     },
     {
       "type": "text",
       "id": "label",
       "label": "Alt Metin",
-      "default": "Mutlu Müşteri"
+      "default": "Mutlu Musteri"
+    },
+    {
+      "type": "range",
+      "id": "label_size",
+      "label": "Etiket Boyutu",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Renk Semasi",
+      "options": [
+        { "value": "scheme-1", "label": "Sema 1" },
+        { "value": "scheme-2", "label": "Sema 2" },
+        { "value": "scheme-3", "label": "Sema 3" },
+        { "value": "inverse", "label": "Ters" }
+      ],
+      "default": "scheme-1"
     },
     {
       "type": "color",
       "id": "bg_color",
       "label": "Arka Plan Rengi",
       "default": "#0a0a0a"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Ust Bosluk",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Alt Bosluk",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
     }
   ],
   "blocks": [
     {
+      "type": "stat",
+      "name": "Istatistik",
+      "settings": [
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Sayi",
+          "default": "500+"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Etiket",
+          "default": "Urun Cesidi"
+        },
+        {
+          "type": "range",
+          "id": "margin_top",
+          "label": "Ust Kenar Boslugu",
+          "min": 0,
+          "max": 30,
+          "step": 2,
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "margin_bottom",
+          "label": "Alt Kenar Boslugu",
+          "min": 0,
+          "max": 30,
+          "step": 2,
+          "unit": "px",
+          "default": 0
+        }
+      ]
+    },
+    {
       "type": "feature",
-      "name": "Özellik",
+      "name": "Ozellik",
       "settings": [
         {
           "type": "text",
           "id": "text",
           "label": "Metin",
-          "default": "%100 Doğal İçerik"
+          "default": "%100 Dogal Icerik"
+        },
+        {
+          "type": "range",
+          "id": "margin_top",
+          "label": "Ust Kenar Boslugu",
+          "min": 0,
+          "max": 30,
+          "step": 2,
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "margin_bottom",
+          "label": "Alt Kenar Boslugu",
+          "min": 0,
+          "max": 30,
+          "step": 2,
+          "unit": "px",
+          "default": 0
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Sosyal Kanıt",
+      "name": "Sosyal Kanit",
       "blocks": [
-        { "type": "feature", "settings": { "text": "%100 Doğal İçerik" } },
-        { "type": "feature", "settings": { "text": "Sülfat & Paraben İçermez" } },
-        { "type": "feature", "settings": { "text": "Türkiye'de Üretilmiştir" } }
+        { "type": "feature", "settings": { "text": "%100 Dogal Icerik" } },
+        { "type": "feature", "settings": { "text": "Sulfat & Paraben Icermez" } },
+        { "type": "feature", "settings": { "text": "Turkiye'de Uretilmistir" } }
       ]
     }
   ]

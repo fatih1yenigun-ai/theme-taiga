@@ -1,3 +1,10 @@
+{%- style -%}
+  .reviews-{{ section.id }} {
+    --padding-top: {{ section.settings.padding_top }};
+    --padding-bottom: {{ section.settings.padding_bottom }};
+  }
+{%- endstyle -%}
+
 {%- assign total_reviews = 0 -%}
 {%- assign total_rating = 0 -%}
 {%- for block in section.blocks -%}
@@ -7,50 +14,59 @@
   {%- endif -%}
 {%- endfor -%}
 
-<section class="reviews-section" style="background: {{ section.settings.bg_color }};">
-  <div class="container">
-    <h2 class="section-heading">{{ section.settings.heading }}</h2>
+<section class="reviews-section reviews-{{ section.id }} section-padding color-{{ section.settings.color_scheme }}" style="background: {{ section.settings.bg_color }};">
+  <div class="page-width">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="{{ section.settings.heading_size }}" style="text-align: {{ section.settings.heading_alignment }}; color: {{ section.settings.heading_color }}; margin-bottom: 3.2rem;">
+        {{ section.settings.heading }}
+      </h2>
+    {%- endif -%}
 
-    {% if section.settings.show_summary and total_reviews > 0 %}
-      {%- assign avg_rating_x10 = total_rating | times: 10 | divided_by: total_reviews -%}
-      {%- assign avg_whole = avg_rating_x10 | divided_by: 10 -%}
-      {%- assign avg_decimal = avg_rating_x10 | modulo: 10 -%}
-      <div class="reviews-summary">
-        <div class="reviews-avg">{{ avg_whole }}.{{ avg_decimal }}</div>
-        <div class="stars" style="justify-content: center; font-size: 20px;">
-          {% for i in (1..5) %}
-            {% if i <= avg_whole %}★{% else %}☆{% endif %}
-          {% endfor %}
+    {%- if section.settings.show_summary and total_reviews > 0 -%}
+      {%- assign avg_x10 = total_rating | times: 10 | divided_by: total_reviews -%}
+      {%- assign avg_whole = avg_x10 | divided_by: 10 -%}
+      {%- assign avg_dec = avg_x10 | modulo: 10 -%}
+      <div class="reviews-summary text-center" style="margin-bottom: 3.2rem;">
+        <div style="font-size: {{ section.settings.avg_size | divided_by: 10.0 }}rem; font-weight: 900; color: {{ section.settings.star_color }};">
+          {{ avg_whole }}.{{ avg_dec }}
         </div>
-        <div class="reviews-total">{{ total_reviews }} değerlendirme</div>
+        <div style="color: {{ section.settings.star_color }}; font-size: 2rem; margin: 0.4rem 0;">
+          {%- for i in (1..5) -%}{% if i <= avg_whole %}★{% else %}☆{% endif %}{%- endfor -%}
+        </div>
+        <div class="text-muted" style="font-size: {{ section.settings.count_size | divided_by: 10.0 }}rem;">
+          {{ total_reviews }} {{ section.settings.count_text }}
+        </div>
       </div>
-    {% endif %}
+    {%- endif -%}
 
-    <div class="reviews-grid">
-      {% for block in section.blocks %}
-        {% if block.type == 'review' %}
-          <div class="review-card" {{ block.shopify_attributes }}>
-            <div class="review-stars">
-              {% for i in (1..5) %}
-                {% if i <= block.settings.rating %}★{% else %}☆{% endif %}
-              {% endfor %}
+    <div class="reviews-grid" style="display: grid; grid-template-columns: repeat({{ section.settings.columns }}, 1fr); gap: {{ section.settings.card_gap }}px; max-width: {{ section.settings.max_width }}px; margin: 0 auto;">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'review' -%}
+          <div class="review-card" style="background: {{ section.settings.card_bg }}; border: {{ section.settings.card_border_width }}px solid {{ section.settings.card_border_color }}; border-radius: {{ section.settings.card_radius }}px; padding: {{ section.settings.card_padding }}px; box-shadow: {{ section.settings.card_shadow_x }}px {{ section.settings.card_shadow_y }}px {{ section.settings.card_shadow_blur }}px rgba(0,0,0,{{ section.settings.card_shadow_opacity | divided_by: 100.0 }});" {{ block.shopify_attributes }}>
+            <div style="color: {{ section.settings.star_color }}; font-size: {{ section.settings.review_star_size | divided_by: 10.0 }}rem; margin-bottom: 0.8rem;">
+              {%- for i in (1..5) -%}{% if i <= block.settings.rating %}★{% else %}☆{% endif %}{%- endfor -%}
             </div>
-            {% if block.settings.title != blank %}
-              <div class="review-title">{{ block.settings.title }}</div>
-            {% endif %}
-            <div class="review-body">{{ block.settings.body }}</div>
-            <div class="review-author">
+            {%- if block.settings.title != blank -%}
+              <div style="font-size: {{ section.settings.review_title_size | divided_by: 10.0 }}rem; font-weight: 700; margin-bottom: 0.6rem; color: {{ section.settings.review_title_color }};">
+                {{ block.settings.title }}
+              </div>
+            {%- endif -%}
+            <div style="font-size: {{ section.settings.review_body_size | divided_by: 10.0 }}rem; color: {{ section.settings.review_body_color }}; line-height: 1.7; margin-bottom: 1.2rem;">
+              {{ block.settings.body }}
+            </div>
+            <div style="font-size: {{ section.settings.review_author_size | divided_by: 10.0 }}rem; color: {{ section.settings.review_author_color }};">
+              {%- if block.settings.avatar != blank -%}
+                <img src="{{ block.settings.avatar | image_url: width: 64 }}" alt="{{ block.settings.author }}" style="width: 2.4rem; height: 2.4rem; border-radius: 50%; display: inline-block; vertical-align: middle; margin-right: 0.6rem; object-fit: cover;" loading="lazy">
+              {%- endif -%}
               {{ block.settings.author }}
-              {% if block.settings.date != blank %}
-                · {{ block.settings.date }}
-              {% endif %}
-              {% if block.settings.verified %}
-                <span class="review-verified">✓ Doğrulanmış Alıcı</span>
-              {% endif %}
+              {%- if block.settings.date != blank %} · {{ block.settings.date }}{% endif -%}
+              {%- if block.settings.verified -%}
+                <span style="color: #4CAF50; font-size: 1.1rem; font-weight: 600; margin-left: 0.4rem;">✓ {{ section.settings.verified_text }}</span>
+              {%- endif -%}
             </div>
           </div>
-        {% endif %}
-      {% endfor %}
+        {%- endif -%}
+      {%- endfor -%}
     </div>
   </div>
 </section>
@@ -58,7 +74,12 @@
 {% schema %}
 {
   "name": "Ürün Değerlendirmeleri",
+  "tag": "section",
   "settings": [
+    {
+      "type": "header",
+      "content": "Başlık"
+    },
     {
       "type": "text",
       "id": "heading",
@@ -66,16 +87,303 @@
       "default": "Müşteri Değerlendirmeleri"
     },
     {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Başlık boyutu",
+      "default": "h2",
+      "options": [
+        { "value": "h1", "label": "Büyük" },
+        { "value": "h2", "label": "Orta" },
+        { "value": "h3", "label": "Küçük" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Başlık hizalama",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Sol" },
+        { "value": "center", "label": "Orta" }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Başlık rengi",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Özet"
+    },
+    {
       "type": "checkbox",
       "id": "show_summary",
-      "label": "Özet Göster",
-      "default": true
+      "default": true,
+      "label": "Özet göster"
+    },
+    {
+      "type": "range",
+      "id": "avg_size",
+      "min": 24,
+      "max": 60,
+      "step": 4,
+      "default": 48,
+      "unit": "px",
+      "label": "Ortalama puan boyutu"
+    },
+    {
+      "type": "text",
+      "id": "count_text",
+      "label": "Sayı metni",
+      "default": "değerlendirme"
+    },
+    {
+      "type": "range",
+      "id": "count_size",
+      "min": 11,
+      "max": 18,
+      "step": 1,
+      "default": 14,
+      "unit": "px",
+      "label": "Sayı boyutu"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Yıldız rengi",
+      "default": "#D4A843"
+    },
+    {
+      "type": "text",
+      "id": "verified_text",
+      "label": "Doğrulanmış rozet metni",
+      "default": "Doğrulanmış Alıcı"
+    },
+    {
+      "type": "header",
+      "content": "Izgara"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2,
+      "label": "Sütun sayısı"
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "min": 8,
+      "max": 32,
+      "step": 4,
+      "default": 16,
+      "unit": "px",
+      "label": "Kart aralığı"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 600,
+      "max": 1200,
+      "step": 50,
+      "default": 900,
+      "unit": "px",
+      "label": "Maksimum genişlik"
+    },
+    {
+      "type": "header",
+      "content": "Kart stili"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Kart arka planı",
+      "default": "#111111"
+    },
+    {
+      "type": "range",
+      "id": "card_border_width",
+      "min": 0,
+      "max": 3,
+      "step": 1,
+      "default": 1,
+      "unit": "px",
+      "label": "Kart kenarlık kalınlığı"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Kart kenarlık rengi",
+      "default": "#2a2a2a"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "default": 8,
+      "unit": "px",
+      "label": "Kart köşe yarıçapı"
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "min": 12,
+      "max": 32,
+      "step": 4,
+      "default": 20,
+      "unit": "px",
+      "label": "Kart dolgusu"
+    },
+    {
+      "type": "range",
+      "id": "card_shadow_x",
+      "min": -8,
+      "max": 8,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "label": "Gölge X"
+    },
+    {
+      "type": "range",
+      "id": "card_shadow_y",
+      "min": -8,
+      "max": 8,
+      "step": 1,
+      "default": 2,
+      "unit": "px",
+      "label": "Gölge Y"
+    },
+    {
+      "type": "range",
+      "id": "card_shadow_blur",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "default": 8,
+      "unit": "px",
+      "label": "Gölge bulanıklığı"
+    },
+    {
+      "type": "range",
+      "id": "card_shadow_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 20,
+      "unit": "%",
+      "label": "Gölge opaklığı"
+    },
+    {
+      "type": "header",
+      "content": "Yorum metni ayarları"
+    },
+    {
+      "type": "range",
+      "id": "review_star_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "default": 14,
+      "unit": "px",
+      "label": "Yıldız boyutu"
+    },
+    {
+      "type": "range",
+      "id": "review_title_size",
+      "min": 13,
+      "max": 20,
+      "step": 1,
+      "default": 15,
+      "unit": "px",
+      "label": "Başlık boyutu"
+    },
+    {
+      "type": "color",
+      "id": "review_title_color",
+      "label": "Başlık rengi",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "review_body_size",
+      "min": 11,
+      "max": 16,
+      "step": 1,
+      "default": 13,
+      "unit": "px",
+      "label": "Yorum boyutu"
+    },
+    {
+      "type": "color",
+      "id": "review_body_color",
+      "label": "Yorum rengi",
+      "default": "#999999"
+    },
+    {
+      "type": "range",
+      "id": "review_author_size",
+      "min": 10,
+      "max": 14,
+      "step": 1,
+      "default": 12,
+      "unit": "px",
+      "label": "Yazar boyutu"
+    },
+    {
+      "type": "color",
+      "id": "review_author_color",
+      "label": "Yazar rengi",
+      "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "Arka plan ve boşluk"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Renk şeması",
+      "default": "background-1",
+      "options": [
+        { "value": "accent-1", "label": "Vurgu 1" },
+        { "value": "accent-2", "label": "Vurgu 2" },
+        { "value": "background-1", "label": "Arka plan 1" },
+        { "value": "background-2", "label": "Arka plan 2" },
+        { "value": "inverse", "label": "Ters" }
+      ]
     },
     {
       "type": "color",
       "id": "bg_color",
-      "label": "Arka Plan Rengi",
+      "label": "Arka plan rengi",
       "default": "#0a0a0a"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 64,
+      "unit": "px",
+      "label": "Üst dolgu"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 64,
+      "unit": "px",
+      "label": "Alt dolgu"
     }
   ],
   "blocks": [
@@ -87,11 +395,11 @@
         {
           "type": "range",
           "id": "rating",
-          "label": "Puan",
           "min": 1,
           "max": 5,
           "step": 1,
-          "default": 5
+          "default": 5,
+          "label": "Puan"
         },
         {
           "type": "text",
@@ -103,7 +411,7 @@
           "type": "textarea",
           "id": "body",
           "label": "Yorum",
-          "default": "Saçlarıma harika bir doku ve hacim veriyor. Kesinlikle tavsiye ederim."
+          "default": "Bu ürünü kesinlikle tavsiye ederim. Kalitesi çok iyi."
         },
         {
           "type": "text",
@@ -120,8 +428,13 @@
         {
           "type": "checkbox",
           "id": "verified",
-          "label": "Doğrulanmış Alıcı",
-          "default": true
+          "default": true,
+          "label": "Doğrulanmış alıcı"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "Profil fotoğrafı"
         }
       ]
     }
@@ -130,9 +443,9 @@
     {
       "name": "Ürün Değerlendirmeleri",
       "blocks": [
-        { "type": "review", "settings": { "rating": 5, "title": "Tam aradığım ürün!", "body": "Deniz tuzu spreyi saçlarıma harika bir doku veriyor. Mat ve doğal bir görünüm sağlıyor, kesinlikle tavsiye ederim.", "author": "Ahmet K.", "date": "15 Mart 2026", "verified": true } },
-        { "type": "review", "settings": { "rating": 5, "title": "Mükemmel hacim", "body": "İnce saçlarım için ideal. Saçlarıma inanılmaz hacim katıyor ve gün boyu kalıcı oluyor.", "author": "Mehmet Y.", "date": "10 Mart 2026", "verified": true } },
-        { "type": "review", "settings": { "rating": 4, "title": "Çok iyi", "body": "Kokusu harika, saçta güzel bir doku bırakıyor. Biraz daha fazla tutuculuk olsa 5 yıldız verirdim.", "author": "Burak S.", "date": "5 Mart 2026", "verified": true } }
+        { "type": "review", "settings": { "rating": 5, "title": "Tam aradığım ürün!", "body": "Saçlarıma harika bir doku veriyor. Mat ve doğal bir görünüm sağlıyor.", "author": "Ahmet K.", "date": "15 Mart 2026", "verified": true } },
+        { "type": "review", "settings": { "rating": 5, "title": "Mükemmel hacim", "body": "İnce saçlarım için ideal. İnanılmaz hacim katıyor ve gün boyu kalıcı.", "author": "Mehmet Y.", "date": "10 Mart 2026", "verified": true } },
+        { "type": "review", "settings": { "rating": 4, "title": "Çok iyi", "body": "Kokusu harika, saçta güzel bir doku bırakıyor.", "author": "Burak S.", "date": "5 Mart 2026", "verified": true } }
       ]
     }
   ]

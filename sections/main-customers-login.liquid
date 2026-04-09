@@ -1,0 +1,152 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} section-{{ section.id }}-padding" style="background-color: #0a0a0a; color: #FFFFFF;">
+  <div style="max-width: 440px; margin: 0 auto; padding: 0 20px;">
+    <h1 style="margin: 0 0 32px 0; font-size: 1.75rem; font-weight: 700; color: #FFFFFF; text-align: center;">
+      {{ section.settings.heading }}
+    </h1>
+
+    {%- form 'customer_login' -%}
+      {%- if form.errors -%}
+        <div style="padding: 12px; margin-bottom: 20px; background: rgba(220,38,38,0.15); border: 1px solid rgba(220,38,38,0.3); border-radius: 8px; color: #fca5a5; font-size: 0.85rem;">
+          {{ form.errors | default_errors }}
+        </div>
+      {%- endif -%}
+
+      <div style="margin-bottom: 16px;">
+        <label for="customer-email" style="display: block; margin-bottom: 6px; font-size: 0.85rem; color: rgba(255,255,255,0.6);">E-posta</label>
+        <input
+          type="email"
+          name="customer[email]"
+          id="customer-email"
+          autocomplete="email"
+          required
+          style="width: 100%; padding: 12px 16px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; color: #FFFFFF; font-size: 0.95rem; outline: none; box-sizing: border-box;"
+        >
+      </div>
+
+      <div style="margin-bottom: 8px;">
+        <label for="customer-password" style="display: block; margin-bottom: 6px; font-size: 0.85rem; color: rgba(255,255,255,0.6);">Şifre</label>
+        <input
+          type="password"
+          name="customer[password]"
+          id="customer-password"
+          autocomplete="current-password"
+          required
+          style="width: 100%; padding: 12px 16px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; color: #FFFFFF; font-size: 0.95rem; outline: none; box-sizing: border-box;"
+        >
+      </div>
+
+      <div style="text-align: right; margin-bottom: 24px;">
+        <a href="#recover" id="recover-link" style="font-size: 0.8rem; color: rgba(255,255,255,0.5); text-decoration: none;">Şifremi unuttum</a>
+      </div>
+
+      <button type="submit" style="width: 100%; padding: 14px; background: #FFFFFF; color: #0a0a0a; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: opacity 0.2s;">
+        Giriş Yap
+      </button>
+
+      <p style="margin: 20px 0 0; text-align: center; font-size: 0.85rem; color: rgba(255,255,255,0.5);">
+        Hesabınız yok mu?
+        <a href="{{ routes.account_register_url }}" style="color: #FFFFFF; text-decoration: none; font-weight: 500;">Kayıt Ol</a>
+      </p>
+    {%- endform -%}
+
+    {%- comment -%} Password recovery form {%- endcomment -%}
+    <div id="recover" style="display: none; margin-top: 40px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.1);">
+      <h2 style="margin: 0 0 12px 0; font-size: 1.25rem; font-weight: 600; color: #FFFFFF; text-align: center;">Şifre Sıfırla</h2>
+      <p style="margin: 0 0 20px 0; font-size: 0.85rem; color: rgba(255,255,255,0.5); text-align: center;">
+        E-posta adresinizi girin, şifre sıfırlama bağlantısı gönderelim.
+      </p>
+
+      {%- form 'recover_customer_password' -%}
+        <div style="margin-bottom: 16px;">
+          <label for="recover-email" style="display: block; margin-bottom: 6px; font-size: 0.85rem; color: rgba(255,255,255,0.6);">E-posta</label>
+          <input
+            type="email"
+            name="email"
+            id="recover-email"
+            autocomplete="email"
+            required
+            style="width: 100%; padding: 12px 16px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; color: #FFFFFF; font-size: 0.95rem; outline: none; box-sizing: border-box;"
+          >
+        </div>
+        <button type="submit" style="width: 100%; padding: 14px; background: #FFFFFF; color: #0a0a0a; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer;">
+          Gönder
+        </button>
+        <p style="margin: 12px 0 0; text-align: center;">
+          <a href="#login" id="login-link" style="font-size: 0.85rem; color: rgba(255,255,255,0.5); text-decoration: none;">Giriş sayfasına dön</a>
+        </p>
+      {%- endform -%}
+    </div>
+
+    <script>
+      (function() {
+        var recoverLink = document.getElementById('recover-link');
+        var loginLink = document.getElementById('login-link');
+        var recoverSection = document.getElementById('recover');
+        if (recoverLink && recoverSection) {
+          recoverLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            recoverSection.style.display = 'block';
+          });
+        }
+        if (loginLink && recoverSection) {
+          loginLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            recoverSection.style.display = 'none';
+          });
+        }
+        if (window.location.hash === '#recover' && recoverSection) {
+          recoverSection.style.display = 'block';
+        }
+      })();
+    </script>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Müşteri Girişi",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Giriş Yap",
+      "label": "Başlık"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Renk şeması",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 60,
+      "unit": "px",
+      "label": "Üst boşluk"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 60,
+      "unit": "px",
+      "label": "Alt boşluk"
+    }
+  ]
+}
+{% endschema %}

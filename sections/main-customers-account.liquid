@@ -1,0 +1,151 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} section-{{ section.id }}-padding" style="background-color: #0a0a0a; color: #FFFFFF;">
+  <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; flex-wrap: wrap; gap: 12px;">
+      <h1 style="margin: 0; font-size: 1.75rem; font-weight: 700; color: #FFFFFF;">
+        {{ section.settings.heading }}
+      </h1>
+      <a href="{{ routes.account_logout_url }}" style="padding: 10px 20px; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.85rem; transition: border-color 0.2s;">
+        Çıkış Yap
+      </a>
+    </div>
+
+    {%- comment -%} Account info {%- endcomment -%}
+    <div style="display: grid; grid-template-columns: 1fr; gap: 32px; margin-bottom: 48px;">
+      <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 24px;">
+        <h2 style="margin: 0 0 16px 0; font-size: 1.1rem; font-weight: 600; color: #FFFFFF;">Hesap Bilgileri</h2>
+        <p style="margin: 0 0 4px 0; font-size: 0.9rem; color: rgba(255,255,255,0.7);">{{ customer.name }}</p>
+        <p style="margin: 0 0 4px 0; font-size: 0.9rem; color: rgba(255,255,255,0.7);">{{ customer.email }}</p>
+        {%- if customer.default_address -%}
+          <p style="margin: 8px 0 0; font-size: 0.85rem; color: rgba(255,255,255,0.5);">
+            {{ customer.default_address.address1 }}{% if customer.default_address.address2 != blank %}, {{ customer.default_address.address2 }}{% endif %}<br>
+            {{ customer.default_address.city }}, {{ customer.default_address.province }} {{ customer.default_address.zip }}<br>
+            {{ customer.default_address.country }}
+          </p>
+        {%- endif -%}
+        <a href="{{ routes.account_addresses_url }}" style="display: inline-block; margin-top: 12px; font-size: 0.85rem; color: rgba(255,255,255,0.5); text-decoration: none;">Adresleri Yönet &rarr;</a>
+      </div>
+    </div>
+
+    {%- comment -%} Order history {%- endcomment -%}
+    <h2 style="margin: 0 0 20px 0; font-size: 1.25rem; font-weight: 600; color: #FFFFFF;">Sipariş Geçmişi</h2>
+
+    {%- if customer.orders.size > 0 -%}
+      {%- comment -%} Desktop table {%- endcomment -%}
+      <div style="display: none;" class="orders-table-desktop">
+        <table style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+              <th style="text-align: left; padding: 12px 0; font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.05em;">Sipariş</th>
+              <th style="text-align: left; padding: 12px 0; font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.05em;">Tarih</th>
+              <th style="text-align: left; padding: 12px 0; font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.05em;">Ödeme Durumu</th>
+              <th style="text-align: left; padding: 12px 0; font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.05em;">Kargo Durumu</th>
+              <th style="text-align: right; padding: 12px 0; font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.05em;">Toplam</th>
+            </tr>
+          </thead>
+          <tbody>
+            {%- for order in customer.orders -%}
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                <td style="padding: 16px 0;">
+                  <a href="{{ order.customer_url }}" style="color: #FFFFFF; text-decoration: none; font-weight: 500;">{{ order.name }}</a>
+                </td>
+                <td style="padding: 16px 0; color: rgba(255,255,255,0.6); font-size: 0.9rem;">{{ order.created_at | date: '%d.%m.%Y' }}</td>
+                <td style="padding: 16px 0;">
+                  <span style="display: inline-block; padding: 4px 10px; font-size: 0.75rem; border-radius: 20px; background: {% if order.financial_status == 'paid' %}rgba(34,197,94,0.15){% else %}rgba(234,179,8,0.15){% endif %}; color: {% if order.financial_status == 'paid' %}#86efac{% else %}#fde047{% endif %};">
+                    {{ order.financial_status_label }}
+                  </span>
+                </td>
+                <td style="padding: 16px 0;">
+                  <span style="display: inline-block; padding: 4px 10px; font-size: 0.75rem; border-radius: 20px; background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.6);">
+                    {{ order.fulfillment_status_label }}
+                  </span>
+                </td>
+                <td style="text-align: right; padding: 16px 0; color: #FFFFFF; font-weight: 500; font-size: 0.9rem;">{{ order.total_price | money }}</td>
+              </tr>
+            {%- endfor -%}
+          </tbody>
+        </table>
+      </div>
+
+      {%- comment -%} Mobile cards {%- endcomment -%}
+      <div class="orders-mobile">
+        {%- for order in customer.orders -%}
+          <a href="{{ order.customer_url }}" style="display: block; text-decoration: none; padding: 16px; margin-bottom: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <span style="color: #FFFFFF; font-weight: 500; font-size: 0.95rem;">{{ order.name }}</span>
+              <span style="color: #FFFFFF; font-weight: 500; font-size: 0.9rem;">{{ order.total_price | money }}</span>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+              <span style="font-size: 0.8rem; color: rgba(255,255,255,0.5);">{{ order.created_at | date: '%d.%m.%Y' }}</span>
+              <span style="display: inline-block; padding: 2px 8px; font-size: 0.7rem; border-radius: 20px; background: {% if order.financial_status == 'paid' %}rgba(34,197,94,0.15){% else %}rgba(234,179,8,0.15){% endif %}; color: {% if order.financial_status == 'paid' %}#86efac{% else %}#fde047{% endif %};">
+                {{ order.financial_status_label }}
+              </span>
+            </div>
+          </a>
+        {%- endfor -%}
+      </div>
+
+      <style>
+        @media (min-width: 750px) {
+          .orders-table-desktop { display: block !important; }
+          .orders-mobile { display: none; }
+        }
+      </style>
+    {%- else -%}
+      <div style="text-align: center; padding: 40px 20px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px;">
+        <p style="margin: 0 0 16px 0; font-size: 1rem; color: rgba(255,255,255,0.6);">Henüz siparişiniz bulunmamaktadır.</p>
+        <a href="{{ routes.all_products_collection_url }}" style="display: inline-block; padding: 12px 28px; background: #FFFFFF; color: #0a0a0a; text-decoration: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600;">
+          Alışverişe Başla
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Müşteri Hesabı",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Hesabım",
+      "label": "Başlık"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Renk şeması",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 48,
+      "unit": "px",
+      "label": "Üst boşluk"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 48,
+      "unit": "px",
+      "label": "Alt boşluk"
+    }
+  ]
+}
+{% endschema %}

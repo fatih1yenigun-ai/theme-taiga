@@ -1,0 +1,438 @@
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    --section-padding-top: {{ section.settings.padding_top }}px;
+    --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --section-bg-color: {{ section.settings.bg_color }};
+    --section-heading-size: {{ section.settings.heading_size }}px;
+    --section-star-color: {{ section.settings.star_color }};
+    --section-bg-star-color: {{ section.settings.bg_star_color }};
+    --section-columns: {{ section.settings.columns }};
+    --section-card-bg: {{ section.settings.card_bg }};
+    --section-card-border: {{ section.settings.card_border }};
+    --section-card-radius: {{ section.settings.card_radius }}px;
+    --section-card-shadow: {{ section.settings.card_shadow }};
+  }
+{%- endstyle -%}
+
+<section
+  id="shopify-section-{{ section.id }}"
+  class="section-padding color-{{ section.settings.color_scheme }}"
+  style="background-color: var(--section-bg-color);"
+  aria-label="{{ section.settings.heading | escape }}"
+>
+  <div class="page-width">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="testimonials__heading" style="font-size: var(--section-heading-size);">
+        {{ section.settings.heading | escape }}
+      </h2>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="testimonials__grid" role="list">
+        {%- for block in section.blocks -%}
+          <article
+            class="testimonials__card"
+            style="
+              margin-top: {{ block.settings.margin_top }}px;
+              margin-bottom: {{ block.settings.margin_bottom }}px;
+            "
+            role="listitem"
+            {{ block.shopify_attributes }}
+          >
+            {%- if block.settings.rating > 0 -%}
+              <div class="testimonials__stars" role="img" aria-label="{{ block.settings.rating }} / 5">
+                {%- for i in (1..5) -%}
+                  <span class="testimonials__star {% if i <= block.settings.rating %}testimonials__star--filled{% else %}testimonials__star--empty{% endif %}" aria-hidden="true">
+                    {% render 'icon-star' %}
+                  </span>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+
+            {%- if block.settings.text != blank -%}
+              <div class="testimonials__text rte">
+                {{ block.settings.text }}
+              </div>
+            {%- endif -%}
+
+            <div class="testimonials__author-row">
+              {%- if section.settings.show_avatar -%}
+                <div class="testimonials__avatar">
+                  {%- if block.settings.avatar != blank -%}
+                    <img
+                      src="{{ block.settings.avatar | image_url: width: 80 }}"
+                      alt="{{ block.settings.author | escape }}"
+                      width="40"
+                      height="40"
+                      loading="lazy"
+                    >
+                  {%- else -%}
+                    <span class="testimonials__avatar-placeholder" aria-hidden="true">
+                      {{ block.settings.author | slice: 0 | upcase }}
+                    </span>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+
+              <div class="testimonials__author-info">
+                {%- if block.settings.author != blank -%}
+                  <span class="testimonials__author-name">{{ block.settings.author | escape }}</span>
+                {%- endif -%}
+                {%- if block.settings.title != blank -%}
+                  <span class="testimonials__author-title">{{ block.settings.title | escape }}</span>
+                {%- endif -%}
+              </div>
+
+              {%- if section.settings.show_date and block.settings.date != blank -%}
+                <span class="testimonials__date">{{ block.settings.date | escape }}</span>
+              {%- endif -%}
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} .section-padding {
+    padding-top: var(--section-padding-top);
+    padding-bottom: var(--section-padding-bottom);
+  }
+
+  #shopify-section-{{ section.id }} .testimonials__heading {
+    color: var(--color-foreground, #FFFFFF);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    text-align: center;
+    margin: 0 0 48px;
+  }
+
+  #shopify-section-{{ section.id }} .testimonials__grid {
+    display: grid;
+    grid-template-columns: repeat(var(--section-columns, 3), 1fr);
+    gap: 24px;
+  }
+
+  #shopify-section-{{ section.id }} .testimonials__card {
+    background-color: var(--section-card-bg, #1a1a1a);
+    border: 1px solid var(--section-card-border, rgba(255,255,255,0.08));
+    border-radius: var(--section-card-radius, 12px);
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  #shopify-section-{{ section.id }} .testimonials__card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  }
+
+  #shopify-section-{{ section.id }} .testimonials__stars {
+    display: flex;
+    gap: 2px;
+  }
+
+  #shopify-section-{{ section.id }} .testimonials__star {
+    display: inline-flex;
+    width: 18px;
+    height: 18px;
+  }
+
+  #shopify-section-{{ section.id }} .testimonials__star svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  #shopify-section-{{ section.id }} .testimonials__star--filled {
+    color: var(--section-star-color, #D4A843);
+  }
+
+  #shopify-section-{{ section.id }} .testimonials__star--empty {
+    color: var(--section-bg-star-color, rgba(255,255,255,0.15));
+  }
+
+  #shopify-section-{{ section.id }} .testimonials__text {
+    color: var(--color-foreground, #FFFFFF);
+    opacity: 0.85;
+    font-size: 15px;
+    line-height: 1.7;
+    flex-grow: 1;
+  }
+
+  #shopify-section-{{ section.id }} .testimonials__author-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  #shopify-section-{{ section.id }} .testimonials__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  #shopify-section-{{ section.id }} .testimonials__avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  #shopify-section-{{ section.id }} .testimonials__avatar-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.1);
+    color: var(--color-foreground, #FFFFFF);
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  #shopify-section-{{ section.id }} .testimonials__author-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex-grow: 1;
+  }
+
+  #shopify-section-{{ section.id }} .testimonials__author-name {
+    color: var(--color-foreground, #FFFFFF);
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  #shopify-section-{{ section.id }} .testimonials__author-title {
+    color: var(--color-foreground, #FFFFFF);
+    opacity: 0.5;
+    font-size: 13px;
+  }
+
+  #shopify-section-{{ section.id }} .testimonials__date {
+    color: var(--color-foreground, #FFFFFF);
+    opacity: 0.4;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section.id }} .testimonials__grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    #shopify-section-{{ section.id }} .testimonials__heading {
+      font-size: calc(var(--section-heading-size) * 0.7) !important;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Muesteri Yorumlari",
+  "tag": "section",
+  "class": "section-testimonials",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Baslik",
+      "default": "Musterilerimiz Ne Diyor?"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Baslik Boyutu",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Yildiz Rengi",
+      "default": "#D4A843"
+    },
+    {
+      "type": "color",
+      "id": "bg_star_color",
+      "label": "Bos Yildiz Rengi",
+      "default": "#333333"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Sutun Sayisi",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Kart Arka Plan",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "card_border",
+      "label": "Kart Cerceve Rengi",
+      "default": "#262626"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Kart Kose Yuvarlama",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "text",
+      "id": "card_shadow",
+      "label": "Kart Golge (CSS)",
+      "default": "0 2px 12px rgba(0,0,0,0.15)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_avatar",
+      "label": "Avatar Goster",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "Tarih Goster",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Renk Semasi",
+      "options": [
+        { "value": "scheme-1", "label": "Sema 1" },
+        { "value": "scheme-2", "label": "Sema 2" },
+        { "value": "scheme-3", "label": "Sema 3" },
+        { "value": "inverse", "label": "Ters" }
+      ],
+      "default": "scheme-1"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Arka Plan Rengi",
+      "default": "#0a0a0a"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Ust Bosluk",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Alt Bosluk",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Yorum",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Degerlendirme",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Yorum Metni",
+          "default": "<p>Harika bir urun! Saclarim cok daha hacimli ve saglikli gorunuyor. Kesinlikle tavsiye ederim.</p>"
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Yazar",
+          "default": "Ayse Y."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Unvan",
+          "default": "Dogrulanmis Alici"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "Avatar"
+        },
+        {
+          "type": "text",
+          "id": "date",
+          "label": "Tarih",
+          "default": "2 gun once"
+        },
+        {
+          "type": "range",
+          "id": "margin_top",
+          "label": "Ust Kenar Boslugu",
+          "min": 0,
+          "max": 30,
+          "step": 2,
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "margin_bottom",
+          "label": "Alt Kenar Boslugu",
+          "min": 0,
+          "max": 30,
+          "step": 2,
+          "unit": "px",
+          "default": 0
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Musteri Yorumlari",
+      "blocks": [
+        { "type": "testimonial", "settings": { "rating": 5, "text": "<p>Harika bir urun! Saclarim cok daha hacimli ve saglikli gorunuyor.</p>", "author": "Ayse Y.", "title": "Dogrulanmis Alici", "date": "2 gun once" } },
+        { "type": "testimonial", "settings": { "rating": 5, "text": "<p>Dogal icerikleri sayesinde saclarim zarar gormeden harika sonuclar aldim.</p>", "author": "Mehmet K.", "title": "Dogrulanmis Alici", "date": "1 hafta once" } },
+        { "type": "testimonial", "settings": { "rating": 4, "text": "<p>Kullanimi cok kolay, kokusu harika. Her gun kullaniyorum.</p>", "author": "Zeynep A.", "title": "Dogrulanmis Alici", "date": "3 gun once" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

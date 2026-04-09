@@ -1,0 +1,344 @@
+{%- style -%}
+  .hero-{{ section.id }} {
+    --hero-min-height: {{ section.settings.desktop_height }}px;
+    --hero-mobile-height: {{ section.settings.mobile_height }}px;
+    --padding-top: {{ section.settings.padding_top }};
+    --padding-bottom: {{ section.settings.padding_bottom }};
+  }
+{%- endstyle -%}
+
+<section class="hero hero-{{ section.id }}" style="position: relative; min-height: var(--hero-min-height); overflow: hidden;">
+  {%- for block in section.blocks -%}
+    <div class="hero__slide{% if forloop.first %} hero__slide--active{% endif %}" style="{% unless forloop.first %}display: none;{% endunless %} position: relative; min-height: var(--hero-min-height);" {{ block.shopify_attributes }}>
+
+      {%- if block.settings.image != blank -%}
+        <img
+          src="{{ block.settings.image | image_url: width: 1920 }}"
+          alt="{{ block.settings.heading | escape }}"
+          style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: {{ block.settings.image_position }};"
+          loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+        >
+      {%- else -%}
+        <div style="position: absolute; inset: 0; background: linear-gradient(135deg, rgb(var(--color-background-2)), rgb(var(--color-background)));"></div>
+      {%- endif -%}
+
+      <div style="position: absolute; inset: 0; background: rgba(0,0,0,{{ block.settings.overlay_opacity | divided_by: 100.0 }});"></div>
+
+      <div class="hero__content page-width" style="position: relative; z-index: 2; display: flex; flex-direction: column; justify-content: {{ block.settings.vertical_position }}; align-items: {{ block.settings.horizontal_position }}; text-align: {% if block.settings.horizontal_position == 'flex-start' %}left{% elsif block.settings.horizontal_position == 'flex-end' %}right{% else %}center{% endif %}; min-height: var(--hero-min-height); padding: 6rem 2rem; color: {{ block.settings.text_color }};">
+
+        {%- if block.settings.prefix != blank -%}
+          <span style="font-size: {{ block.settings.prefix_size | divided_by: 10.0 }}rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem; opacity: 0.8;">
+            {{ block.settings.prefix }}
+          </span>
+        {%- endif -%}
+
+        {%- if block.settings.heading != blank -%}
+          <h2 class="{{ block.settings.heading_size }}" style="color: inherit; max-width: {{ block.settings.content_max_width }}px; margin-bottom: 1.6rem;">
+            {{ block.settings.heading }}
+          </h2>
+        {%- endif -%}
+
+        {%- if block.settings.text != blank -%}
+          <div class="rte" style="max-width: {{ block.settings.content_max_width }}px; font-size: {{ block.settings.text_size | divided_by: 10.0 }}rem; line-height: 1.7; margin-bottom: 2.4rem; opacity: 0.9;">
+            {{ block.settings.text }}
+          </div>
+        {%- endif -%}
+
+        <div style="display: flex; gap: 1.2rem; flex-wrap: wrap; justify-content: {% if block.settings.horizontal_position == 'flex-start' %}flex-start{% elsif block.settings.horizontal_position == 'flex-end' %}flex-end{% else %}center{% endif %};">
+          {%- if block.settings.button_1_label != blank -%}
+            <a href="{{ block.settings.button_1_link }}" class="btn btn--primary" style="padding: 1.4rem 3.2rem;">
+              {{ block.settings.button_1_label }}
+            </a>
+          {%- endif -%}
+          {%- if block.settings.button_2_label != blank -%}
+            <a href="{{ block.settings.button_2_link }}" class="btn btn--secondary" style="padding: 1.4rem 3.2rem; border-color: {{ block.settings.text_color }}; color: {{ block.settings.text_color }};">
+              {{ block.settings.button_2_label }}
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  {%- endfor -%}
+
+  {%- if section.blocks.size > 1 and section.settings.show_dots -%}
+    <div class="slider-controls" style="position: absolute; bottom: 2rem; left: 0; right: 0; z-index: 3;">
+      {%- for block in section.blocks -%}
+        <button class="slider-dot{% if forloop.first %} active{% endif %}" data-slide="{{ forloop.index0 }}" aria-label="Slayt {{ forloop.index }}"></button>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</section>
+
+{% if section.blocks.size > 1 and section.settings.autoplay %}
+<script>
+  (function() {
+    var section = document.querySelector('.hero-{{ section.id }}');
+    var slides = section.querySelectorAll('.hero__slide');
+    var dots = section.querySelectorAll('.slider-dot');
+    var current = 0;
+    var speed = {{ section.settings.autoplay_speed }} * 1000;
+    function showSlide(n) {
+      slides.forEach(function(s, i) { s.style.display = i === n ? '' : 'none'; s.classList.toggle('hero__slide--active', i === n); });
+      dots.forEach(function(d, i) { d.classList.toggle('active', i === n); });
+      current = n;
+    }
+    setInterval(function() { showSlide((current + 1) % slides.length); }, speed);
+    dots.forEach(function(d) { d.addEventListener('click', function() { showSlide(parseInt(this.dataset.slide)); }); });
+  })();
+</script>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Hero Slayt",
+  "tag": "section",
+  "class": "shopify-section--hero",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Boyutlar"
+    },
+    {
+      "type": "range",
+      "id": "desktop_height",
+      "min": 300,
+      "max": 900,
+      "step": 50,
+      "default": 600,
+      "unit": "px",
+      "label": "Masaüstü yükseklik"
+    },
+    {
+      "type": "range",
+      "id": "mobile_height",
+      "min": 200,
+      "max": 600,
+      "step": 50,
+      "default": 400,
+      "unit": "px",
+      "label": "Mobil yükseklik"
+    },
+    {
+      "type": "header",
+      "content": "Slayt kontrolleri"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "default": true,
+      "label": "Otomatik oynat"
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 2,
+      "max": 15,
+      "step": 1,
+      "default": 5,
+      "unit": "sn",
+      "label": "Geçiş hızı"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dots",
+      "default": true,
+      "label": "Sayfa noktaları göster"
+    },
+    {
+      "type": "header",
+      "content": "Boşluk"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "label": "Üst dolgu"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "label": "Alt dolgu"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slayt",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Arka plan"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Masaüstü görseli"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobil görsel (isteğe bağlı)"
+        },
+        {
+          "type": "select",
+          "id": "image_position",
+          "label": "Görsel konumu",
+          "default": "center center",
+          "options": [
+            { "value": "center center", "label": "Orta" },
+            { "value": "center top", "label": "Üst" },
+            { "value": "center bottom", "label": "Alt" },
+            { "value": "left center", "label": "Sol" },
+            { "value": "right center", "label": "Sağ" }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "min": 0,
+          "max": 90,
+          "step": 5,
+          "default": 40,
+          "unit": "%",
+          "label": "Kaplama opaklığı"
+        },
+        {
+          "type": "header",
+          "content": "İçerik"
+        },
+        {
+          "type": "text",
+          "id": "prefix",
+          "label": "Üst etiket"
+        },
+        {
+          "type": "range",
+          "id": "prefix_size",
+          "min": 10,
+          "max": 18,
+          "step": 1,
+          "default": 13,
+          "unit": "px",
+          "label": "Üst etiket boyutu"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Başlık",
+          "default": "Premium Erkek Bakım"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "label": "Başlık boyutu",
+          "default": "h0",
+          "options": [
+            { "value": "h0", "label": "Çok Büyük" },
+            { "value": "h1", "label": "Büyük" },
+            { "value": "h2", "label": "Orta" }
+          ]
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Açıklama"
+        },
+        {
+          "type": "range",
+          "id": "text_size",
+          "min": 13,
+          "max": 22,
+          "step": 1,
+          "default": 16,
+          "unit": "px",
+          "label": "Açıklama boyutu"
+        },
+        {
+          "type": "range",
+          "id": "content_max_width",
+          "min": 300,
+          "max": 800,
+          "step": 50,
+          "default": 600,
+          "unit": "px",
+          "label": "İçerik maks. genişlik"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Metin rengi",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "header",
+          "content": "Konum"
+        },
+        {
+          "type": "select",
+          "id": "vertical_position",
+          "label": "Dikey konum",
+          "default": "center",
+          "options": [
+            { "value": "flex-start", "label": "Üst" },
+            { "value": "center", "label": "Orta" },
+            { "value": "flex-end", "label": "Alt" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "horizontal_position",
+          "label": "Yatay konum",
+          "default": "center",
+          "options": [
+            { "value": "flex-start", "label": "Sol" },
+            { "value": "center", "label": "Orta" },
+            { "value": "flex-end", "label": "Sağ" }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Düğmeler"
+        },
+        {
+          "type": "text",
+          "id": "button_1_label",
+          "label": "Düğme 1 metni",
+          "default": "ÜRÜNLERE GÖZ AT"
+        },
+        {
+          "type": "url",
+          "id": "button_1_link",
+          "label": "Düğme 1 bağlantısı"
+        },
+        {
+          "type": "text",
+          "id": "button_2_label",
+          "label": "Düğme 2 metni"
+        },
+        {
+          "type": "url",
+          "id": "button_2_link",
+          "label": "Düğme 2 bağlantısı"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Slayt",
+      "blocks": [
+        { "type": "slide", "settings": { "heading": "Premium Erkek Bakım", "button_1_label": "ÜRÜNLERE GÖZ AT" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,167 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} section-{{ section.id }}-padding" style="background-color: #0a0a0a; color: #FFFFFF;">
+  <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+    <h1 style="margin: 0 0 32px 0; font-size: 2rem; font-weight: 700; color: #FFFFFF;">
+      {{ section.settings.heading }}
+    </h1>
+
+    {%- if cart.item_count > 0 -%}
+      <form action="{{ routes.cart_url }}" method="post" id="cart">
+        {%- comment -%} Desktop table {%- endcomment -%}
+        <div style="display: none;" class="cart-table-desktop">
+          <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                <th style="text-align: left; padding: 12px 0; font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.05em;">Ürün</th>
+                <th style="text-align: right; padding: 12px 0; font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.05em;">Fiyat</th>
+                <th style="text-align: center; padding: 12px 0; font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.05em;">Adet</th>
+                <th style="text-align: right; padding: 12px 0; font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.05em;">Toplam</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%- for item in cart.items -%}
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                  <td style="padding: 20px 0;">
+                    <div style="display: flex; gap: 16px; align-items: center;">
+                      <a href="{{ item.url }}" style="flex-shrink: 0;">
+                        <img
+                          src="{{ item.image | image_url: width: 120 }}"
+                          alt="{{ item.title | escape }}"
+                          loading="lazy"
+                          style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);"
+                        >
+                      </a>
+                      <div>
+                        <a href="{{ item.url }}" style="color: #FFFFFF; text-decoration: none; font-weight: 500; font-size: 0.95rem;">{{ item.product.title }}</a>
+                        {%- unless item.product.has_only_default_variant -%}
+                          <p style="margin: 4px 0 0; font-size: 0.8rem; color: rgba(255,255,255,0.5);">{{ item.variant.title }}</p>
+                        {%- endunless -%}
+                        {%- if section.settings.show_vendor -%}
+                          <p style="margin: 4px 0 0; font-size: 0.8rem; color: rgba(255,255,255,0.4);">{{ item.product.vendor }}</p>
+                        {%- endif -%}
+                      </div>
+                    </div>
+                  </td>
+                  <td style="text-align: right; padding: 20px 0; color: rgba(255,255,255,0.8); font-size: 0.9rem;">{{ item.price | money }}</td>
+                  <td style="text-align: center; padding: 20px 0;">
+                    <div style="display: inline-flex; align-items: center; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; overflow: hidden;">
+                      <button type="button" onclick="this.parentNode.querySelector('input').stepDown(); this.closest('form').submit();" style="width: 36px; height: 36px; background: transparent; border: none; color: #FFFFFF; cursor: pointer; font-size: 1rem;">−</button>
+                      <input
+                        type="number"
+                        name="updates[]"
+                        value="{{ item.quantity }}"
+                        min="0"
+                        style="width: 44px; height: 36px; text-align: center; background: transparent; border: none; border-left: 1px solid rgba(255,255,255,0.1); border-right: 1px solid rgba(255,255,255,0.1); color: #FFFFFF; font-size: 0.9rem; -moz-appearance: textfield;"
+                      >
+                      <button type="button" onclick="this.parentNode.querySelector('input').stepUp(); this.closest('form').submit();" style="width: 36px; height: 36px; background: transparent; border: none; color: #FFFFFF; cursor: pointer; font-size: 1rem;">+</button>
+                    </div>
+                  </td>
+                  <td style="text-align: right; padding: 20px 0;">
+                    <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+                      <span style="color: #FFFFFF; font-weight: 500; font-size: 0.95rem;">{{ item.line_price | money }}</span>
+                      <a href="{{ item.url_to_remove }}" style="font-size: 0.8rem; color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.2s;">Kaldır</a>
+                    </div>
+                  </td>
+                </tr>
+              {%- endfor -%}
+            </tbody>
+          </table>
+        </div>
+
+        {%- comment -%} Mobile cards {%- endcomment -%}
+        <div class="cart-mobile">
+          {%- for item in cart.items -%}
+            <div style="display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">
+              <a href="{{ item.url }}" style="flex-shrink: 0;">
+                <img src="{{ item.image | image_url: width: 120 }}" alt="{{ item.title | escape }}" loading="lazy" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);">
+              </a>
+              <div style="flex: 1; min-width: 0;">
+                <a href="{{ item.url }}" style="color: #FFFFFF; text-decoration: none; font-weight: 500; font-size: 0.9rem;">{{ item.product.title }}</a>
+                {%- unless item.product.has_only_default_variant -%}
+                  <p style="margin: 2px 0 0; font-size: 0.8rem; color: rgba(255,255,255,0.5);">{{ item.variant.title }}</p>
+                {%- endunless -%}
+                <p style="margin: 8px 0 0; font-size: 0.9rem; color: #FFFFFF; font-weight: 500;">{{ item.line_price | money }}</p>
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 8px;">
+                  <div style="display: inline-flex; align-items: center; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; overflow: hidden;">
+                    <button type="button" onclick="this.parentNode.querySelector('input').stepDown(); this.closest('form').submit();" style="width: 32px; height: 32px; background: transparent; border: none; color: #FFFFFF; cursor: pointer;">−</button>
+                    <input type="number" name="updates[]" value="{{ item.quantity }}" min="0" style="width: 36px; height: 32px; text-align: center; background: transparent; border: none; border-left: 1px solid rgba(255,255,255,0.1); border-right: 1px solid rgba(255,255,255,0.1); color: #FFFFFF; font-size: 0.85rem; -moz-appearance: textfield;">
+                    <button type="button" onclick="this.parentNode.querySelector('input').stepUp(); this.closest('form').submit();" style="width: 32px; height: 32px; background: transparent; border: none; color: #FFFFFF; cursor: pointer;">+</button>
+                  </div>
+                  <a href="{{ item.url_to_remove }}" style="font-size: 0.8rem; color: rgba(255,255,255,0.4); text-decoration: none;">Kaldır</a>
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+
+        <style>
+          @media (min-width: 750px) {
+            .cart-table-desktop { display: block !important; }
+            .cart-mobile { display: none; }
+          }
+        </style>
+      </form>
+    {%- else -%}
+      <div style="text-align: center; padding: 60px 20px;">
+        <p style="margin: 0 0 24px 0; font-size: 1.1rem; color: rgba(255,255,255,0.6);">Sepetiniz şu anda boş.</p>
+        <a href="{{ routes.all_products_collection_url }}" style="display: inline-block; padding: 14px 32px; background: #FFFFFF; color: #0a0a0a; text-decoration: none; border-radius: 8px; font-size: 0.95rem; font-weight: 600;">
+          Alışverişe Başla
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Sepet Ürünleri",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Sepetiniz",
+      "label": "Başlık"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": false,
+      "label": "Üreticiyi göster"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Renk şeması",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 48,
+      "unit": "px",
+      "label": "Üst boşluk"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 24,
+      "unit": "px",
+      "label": "Alt boşluk"
+    }
+  ]
+}
+{% endschema %}

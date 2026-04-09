@@ -2,58 +2,50 @@
   "sections": {
     "product-main": {
       "type": "product-main",
-      "settings": {
-        "show_subtitle": true,
-        "subtitle": "Doğal deniz tuzu ile saçlarınıza hacim ve doku kazandırın. Plaj dalgası efekti için ideal.",
-        "show_rating": true,
-        "rating": 5,
-        "review_count": "2.847",
-        "add_to_cart_text": "SEPETE EKLE",
-        "show_buy_now": true,
-        "buy_now_text": "HEMEN SATIN AL",
-        "show_trust_badges": true
-      },
+      "settings": { "media_width": 50, "enable_sticky_media": true },
       "blocks": {
+        "title": { "type": "title", "settings": { "heading_size": "h1" } },
+        "rating": { "type": "rating_stars", "settings": { "rating": 5, "review_count": "2.847", "count_text": "değerlendirme" } },
         "feat-1": { "type": "feature", "settings": { "text": "Anında Plaj Dalgası & Dokulu Görünüm" } },
         "feat-2": { "type": "feature", "settings": { "text": "Premium Toksik Olmayan İçerikler" } },
         "feat-3": { "type": "feature", "settings": { "text": "Doğal Türetilmiş Koku" } },
-        "badge-1": { "type": "trust_badge", "settings": { "icon": "🚚", "label": "Ücretsiz Kargo" } },
-        "badge-2": { "type": "trust_badge", "settings": { "icon": "↩️", "label": "30 Gün İade" } },
-        "badge-3": { "type": "trust_badge", "settings": { "icon": "🔒", "label": "Güvenli Ödeme" } },
-        "badge-4": { "type": "trust_badge", "settings": { "icon": "🌿", "label": "Doğal İçerik" } }
+        "price": { "type": "price", "settings": { "show_badges": true } },
+        "variant-picker": { "type": "variant_picker", "settings": { "picker_type": "pills" } },
+        "buy-buttons": { "type": "buy_buttons", "settings": { "add_to_cart_text": "SEPETE EKLE", "show_buy_now": true, "buy_now_text": "HEMEN SATIN AL", "show_quantity": false } },
+        "badge-1": { "type": "trust_badge", "settings": { "label": "Ücretsiz Kargo" } },
+        "badge-2": { "type": "trust_badge", "settings": { "label": "30 Gün İade" } },
+        "badge-3": { "type": "trust_badge", "settings": { "label": "Güvenli Ödeme" } },
+        "badge-4": { "type": "trust_badge", "settings": { "label": "Doğal İçerik" } },
+        "divider-1": { "type": "divider", "settings": {} },
+        "desc": { "type": "description", "settings": {} },
+        "tab-1": { "type": "collapsible_tab", "settings": { "heading": "İçerikler", "content": "<p>Deniz tuzu, argan yağı, keratin, doğal bitkisel özler.</p>" } },
+        "tab-2": { "type": "collapsible_tab", "settings": { "heading": "Kullanım", "content": "<p>Nemli veya kuru saçlara 2-3 sıkım uygulayın. Parmaklarınızla şekil verin.</p>" } },
+        "tab-3": { "type": "collapsible_tab", "settings": { "heading": "Kargo & İade", "content": "<p>500 TL üzeri siparişlerde ücretsiz kargo. 30 gün koşulsuz iade.</p>" } }
       },
-      "block_order": ["feat-1", "feat-2", "feat-3", "badge-1", "badge-2", "badge-3", "badge-4"]
+      "block_order": ["title", "rating", "feat-1", "feat-2", "feat-3", "price", "variant-picker", "buy-buttons", "badge-1", "badge-2", "badge-3", "badge-4", "divider-1", "desc", "tab-1", "tab-2", "tab-3"]
     },
     "product-icons-bar": {
       "type": "product-icons-bar",
       "blocks": {
-        "icon-1": { "type": "icon", "settings": { "label": "Doğal İçerik" } },
-        "icon-2": { "type": "icon", "settings": { "label": "Hızlı Kargo" } },
-        "icon-3": { "type": "icon", "settings": { "label": "Kolay İade" } },
-        "icon-4": { "type": "icon", "settings": { "label": "Güvenli Ödeme" } }
+        "i-1": { "type": "icon", "settings": { "label": "Doğal İçerik" } },
+        "i-2": { "type": "icon", "settings": { "label": "Hızlı Kargo" } },
+        "i-3": { "type": "icon", "settings": { "label": "Kolay İade" } },
+        "i-4": { "type": "icon", "settings": { "label": "Güvenli Ödeme" } }
       },
-      "block_order": ["icon-1", "icon-2", "icon-3", "icon-4"]
+      "block_order": ["i-1", "i-2", "i-3", "i-4"]
     },
     "social-proof": {
       "type": "social-proof",
-      "settings": {
-        "number": "3.000.000+",
-        "label": "Mutlu Müşteri",
-        "bg_color": "#0a0a0a"
-      },
+      "settings": { "number": "3.000.000+", "label": "Mutlu Müşteri" },
       "blocks": {
-        "feat-1": { "type": "feature", "settings": { "text": "%100 Doğal İçerik" } },
-        "feat-2": { "type": "feature", "settings": { "text": "Sülfat & Paraben İçermez" } },
-        "feat-3": { "type": "feature", "settings": { "text": "Dermatolog Onaylı" } }
+        "f-1": { "type": "feature", "settings": { "text": "%100 Doğal İçerik" } },
+        "f-2": { "type": "feature", "settings": { "text": "Sülfat & Paraben İçermez" } },
+        "f-3": { "type": "feature", "settings": { "text": "Dermatolog Onaylı" } }
       },
-      "block_order": ["feat-1", "feat-2", "feat-3"]
+      "block_order": ["f-1", "f-2", "f-3"]
     },
     "key-ingredients": {
       "type": "key-ingredients",
-      "settings": {
-        "heading": "Temel İçerikler",
-        "bg_color": "#141414"
-      },
       "blocks": {
         "ing-1": { "type": "ingredient", "settings": { "name": "Deniz Tuzu" } },
         "ing-2": { "type": "ingredient", "settings": { "name": "Argan Yağı" } },
@@ -63,57 +55,36 @@
     },
     "faq": {
       "type": "faq",
-      "settings": {
-        "heading": "Sıkça Sorulan Sorular",
-        "bg_color": "#0a0a0a"
-      },
       "blocks": {
-        "q-1": { "type": "faq", "settings": { "question": "Deniz tuzu spreyi nasıl kullanılır?", "answer": "<p>Nemli veya kuru saçlara 2-3 sıkım uygulayın. Parmaklarınızla şekil verin ve kurumasını bekleyin. Doğal, hacimli bir görünüm elde edin.</p>" } },
-        "q-2": { "type": "faq", "settings": { "question": "Hangi saç tiplerine uygun?", "answer": "<p>Tüm saç tiplerine uygundur. Özellikle düz ve ince saçlarda harika hacim ve doku sağlar.</p>" } },
-        "q-3": { "type": "faq", "settings": { "question": "Saçıma zarar verir mi?", "answer": "<p>Hayır. Doğal içerikleri sayesinde saçınıza zarar vermez, aksine besleyici yardımcı olur.</p>" } },
-        "q-4": { "type": "faq", "settings": { "question": "Ne kadar süre dayanır?", "answer": "<p>Günlük kullanımda yaklaşık 2-3 ay dayanır. 200ml büyük boy şişe.</p>" } },
-        "q-5": { "type": "faq", "settings": { "question": "İade politikanız nedir?", "answer": "<p>30 gün içinde koşulsuz iade garantisi sunuyoruz. Memnun kalmazsanız paranızı iade ediyoruz.</p>" } }
+        "q-1": { "type": "faq", "settings": { "question": "Deniz tuzu spreyi nasıl kullanılır?", "answer": "<p>Nemli veya kuru saçlara 2-3 sıkım uygulayın. Parmaklarınızla şekil verin.</p>" } },
+        "q-2": { "type": "faq", "settings": { "question": "Hangi saç tiplerine uygun?", "answer": "<p>Tüm saç tiplerine uygundur. Özellikle düz ve ince saçlarda harika hacim sağlar.</p>" } },
+        "q-3": { "type": "faq", "settings": { "question": "Saçıma zarar verir mi?", "answer": "<p>Hayır. Doğal içerikleri sayesinde saçınıza zarar vermez.</p>" } },
+        "q-4": { "type": "faq", "settings": { "question": "İade politikanız nedir?", "answer": "<p>30 gün içinde koşulsuz iade garantisi sunuyoruz.</p>" } }
       },
-      "block_order": ["q-1", "q-2", "q-3", "q-4", "q-5"]
+      "block_order": ["q-1", "q-2", "q-3", "q-4"]
     },
     "why-choose": {
       "type": "why-choose",
-      "settings": {
-        "heading": "Neden BASED?",
-        "bg_color": "#141414"
-      },
       "blocks": {
-        "r-1": { "type": "reason", "settings": { "icon": "🌿", "title": "Doğal Formül", "description": "Zararlı kimyasallar içermeyen, doğal içeriklerle zenginleştirilmiş formül." } },
-        "r-2": { "type": "reason", "settings": { "icon": "🧪", "title": "Bilimsel Yaklaşım", "description": "Her ürün dermatologlar tarafından test edilmiş ve onaylanmıştır." } },
-        "r-3": { "type": "reason", "settings": { "icon": "♻️", "title": "Sürdürülebilir", "description": "Çevre dostu ambalaj ve sürdürülebilir üretim süreçleri." } },
-        "r-4": { "type": "reason", "settings": { "icon": "🇹🇷", "title": "Yerli Üretim", "description": "Türkiye'de üretilen, uluslararası standartlarda kalite." } }
+        "r-1": { "type": "reason", "settings": { "title": "Doğal Formül", "description": "Zararlı kimyasallar içermeyen formül." } },
+        "r-2": { "type": "reason", "settings": { "title": "Bilimsel Yaklaşım", "description": "Dermatologlar tarafından test edilmiştir." } },
+        "r-3": { "type": "reason", "settings": { "title": "Sürdürülebilir", "description": "Çevre dostu ambalaj ve üretim." } },
+        "r-4": { "type": "reason", "settings": { "title": "Yerli Üretim", "description": "Uluslararası standartlarda kalite." } }
       },
       "block_order": ["r-1", "r-2", "r-3", "r-4"]
     },
     "product-reviews": {
       "type": "product-reviews",
-      "settings": {
-        "heading": "Müşteri Değerlendirmeleri",
-        "show_summary": true,
-        "bg_color": "#0a0a0a"
-      },
+      "settings": { "heading": "Müşteri Değerlendirmeleri", "show_summary": true },
       "blocks": {
-        "rev-1": { "type": "review", "settings": { "rating": 5, "title": "Tam aradığım ürün!", "body": "Deniz tuzu spreyi saçlarıma harika bir doku veriyor. Mat ve doğal bir görünüm sağlıyor, kesinlikle tavsiye ederim.", "author": "Ahmet K.", "date": "15 Mart 2026", "verified": true } },
-        "rev-2": { "type": "review", "settings": { "rating": 5, "title": "Mükemmel hacim", "body": "İnce saçlarım için ideal. Saçlarıma inanılmaz hacim katıyor ve gün boyu kalıcı oluyor.", "author": "Mehmet Y.", "date": "10 Mart 2026", "verified": true } },
-        "rev-3": { "type": "review", "settings": { "rating": 4, "title": "Çok iyi", "body": "Kokusu harika, saçta güzel bir doku bırakıyor. Biraz daha fazla tutuculuk olsa 5 yıldız verirdim.", "author": "Burak S.", "date": "5 Mart 2026", "verified": true } },
-        "rev-4": { "type": "review", "settings": { "rating": 5, "title": "Günlük kullanım için mükemmel", "body": "Her gün kullanıyorum, saçlarım çok daha dolgun ve şekilli görünüyor. Kokusu da çok hoş.", "author": "Emre T.", "date": "28 Şubat 2026", "verified": true } },
-        "rev-5": { "type": "review", "settings": { "rating": 5, "title": "En iyi sea salt spray", "body": "Daha önce birçok marka denedim ama bu açık ara en iyisi. Saça yapışkanlık hissi vermiyor.", "author": "Can D.", "date": "20 Şubat 2026", "verified": true } }
+        "rev-1": { "type": "review", "settings": { "rating": 5, "title": "Tam aradığım ürün!", "body": "Deniz tuzu spreyi saçlarıma harika bir doku veriyor.", "author": "Ahmet K.", "date": "15 Mart 2026", "verified": true } },
+        "rev-2": { "type": "review", "settings": { "rating": 5, "title": "Mükemmel hacim", "body": "İnce saçlarım için ideal. İnanılmaz hacim katıyor.", "author": "Mehmet Y.", "date": "10 Mart 2026", "verified": true } },
+        "rev-3": { "type": "review", "settings": { "rating": 4, "title": "Çok iyi", "body": "Kokusu harika, saçta güzel bir doku bırakıyor.", "author": "Burak S.", "date": "5 Mart 2026", "verified": true } },
+        "rev-4": { "type": "review", "settings": { "rating": 5, "title": "Günlük kullanım için mükemmel", "body": "Her gün kullanıyorum, saçlarım çok daha dolgun görünüyor.", "author": "Emre T.", "date": "28 Şubat 2026", "verified": true } },
+        "rev-5": { "type": "review", "settings": { "rating": 5, "title": "En iyi sea salt spray", "body": "Birçok marka denedim ama bu açık ara en iyisi.", "author": "Can D.", "date": "20 Şubat 2026", "verified": true } }
       },
       "block_order": ["rev-1", "rev-2", "rev-3", "rev-4", "rev-5"]
     }
   },
-  "order": [
-    "product-main",
-    "product-icons-bar",
-    "social-proof",
-    "key-ingredients",
-    "faq",
-    "why-choose",
-    "product-reviews"
-  ]
+  "order": ["product-main", "product-icons-bar", "social-proof", "key-ingredients", "faq", "why-choose", "product-reviews"]
 }

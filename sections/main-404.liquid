@@ -1,0 +1,84 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} section-{{ section.id }}-padding" style="background-color: #0a0a0a; color: #FFFFFF;">
+  <div style="max-width: 600px; margin: 0 auto; padding: 0 20px; text-align: center;">
+    <div style="font-size: 6rem; font-weight: 800; color: rgba(255,255,255,0.08); line-height: 1; margin-bottom: 16px;">404</div>
+
+    <h1 style="margin: 0 0 12px 0; font-size: 1.75rem; font-weight: 700; color: #FFFFFF;">
+      {{ section.settings.heading }}
+    </h1>
+
+    <p style="margin: 0 0 32px 0; font-size: 1rem; line-height: 1.6; color: rgba(255,255,255,0.6);">
+      {{ section.settings.subtext }}
+    </p>
+
+    <a href="{{ section.settings.button_link }}" style="display: inline-block; padding: 14px 32px; background: #FFFFFF; color: #0a0a0a; text-decoration: none; border-radius: 8px; font-size: 0.95rem; font-weight: 600; transition: opacity 0.2s;">
+      {{ section.settings.button_text }}
+    </a>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "404 Sayfası",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Sayfa Bulunamadı",
+      "label": "Başlık"
+    },
+    {
+      "type": "text",
+      "id": "subtext",
+      "default": "Aradığınız sayfa mevcut değil veya taşınmış olabilir.",
+      "label": "Alt metin"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "default": "Ana Sayfaya Dön",
+      "label": "Buton metni"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "default": "/",
+      "label": "Buton bağlantısı"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Renk şeması",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 80,
+      "unit": "px",
+      "label": "Üst boşluk"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 80,
+      "unit": "px",
+      "label": "Alt boşluk"
+    }
+  ]
+}
+{% endschema %}

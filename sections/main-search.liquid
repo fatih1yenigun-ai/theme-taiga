@@ -1,0 +1,183 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  .search-grid-{{ section.id }} {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  @media (min-width: 750px) {
+    .search-grid-{{ section.id }} {
+      grid-template-columns: repeat({{ section.settings.columns }}, 1fr);
+      gap: 24px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} section-{{ section.id }}-padding" style="background-color: #0a0a0a; color: #FFFFFF;">
+  <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+    <h1 style="margin: 0 0 24px 0; font-size: 2rem; font-weight: 700; color: #FFFFFF;">
+      {{ section.settings.heading }}
+    </h1>
+
+    <form action="{{ routes.search_url }}" method="get" style="margin-bottom: 40px;">
+      <div style="display: flex; gap: 8px; max-width: 600px;">
+        <input
+          type="search"
+          name="q"
+          value="{{ search.terms | escape }}"
+          placeholder="Ürün, kategori veya marka ara..."
+          style="flex: 1; padding: 12px 16px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; color: #FFFFFF; font-size: 0.95rem; outline: none;"
+        >
+        <input type="hidden" name="type" value="product">
+        <button type="submit" style="padding: 12px 24px; background: #FFFFFF; color: #0a0a0a; border: none; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: opacity 0.2s;">
+          Ara
+        </button>
+      </div>
+    </form>
+
+    {%- if search.performed -%}
+      {%- if search.results_count > 0 -%}
+        <p style="margin: 0 0 24px 0; font-size: 0.9rem; color: rgba(255,255,255,0.5);">
+          "{{ search.terms }}" için {{ search.results_count }} sonuç bulundu
+        </p>
+
+        {%- paginate search.results by 16 -%}
+          <div class="search-grid-{{ section.id }}">
+            {%- for item in search.results -%}
+              <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden; transition: border-color 0.2s;">
+                {%- if item.featured_image -%}
+                  <a href="{{ item.url }}" style="display: block; overflow: hidden;">
+                    <img
+                      src="{{ item.featured_image | image_url: width: 600 }}"
+                      alt="{{ item.featured_image.alt | escape }}"
+                      loading="lazy"
+                      style="width: 100%; {% if section.settings.image_ratio == 'square' %}aspect-ratio: 1/1;{% elsif section.settings.image_ratio == 'portrait' %}aspect-ratio: 2/3;{% else %}aspect-ratio: 3/4;{% endif %} object-fit: cover; display: block;"
+                    >
+                  </a>
+                {%- endif -%}
+
+                <div style="padding: 16px;">
+                  {%- if section.settings.show_vendor and item.vendor -%}
+                    <p style="margin: 0 0 4px 0; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: rgba(255,255,255,0.4);">{{ item.vendor }}</p>
+                  {%- endif -%}
+
+                  <h3 style="margin: 0 0 8px 0; font-size: 0.95rem; font-weight: 500;">
+                    <a href="{{ item.url }}" style="color: #FFFFFF; text-decoration: none;">{{ item.title }}</a>
+                  </h3>
+
+                  {%- if section.settings.show_price and item.price -%}
+                    <p style="margin: 0; font-size: 0.9rem; font-weight: 600; color: #FFFFFF;">{{ item.price | money }}</p>
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+
+          {%- if paginate.pages > 1 -%}
+            <nav style="display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 48px;">
+              {%- if paginate.previous -%}
+                <a href="{{ paginate.previous.url }}" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #FFFFFF; text-decoration: none;">&laquo;</a>
+              {%- endif -%}
+              {%- for part in paginate.parts -%}
+                {%- if part.is_link -%}
+                  <a href="{{ part.url }}" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #FFFFFF; text-decoration: none;">{{ part.title }}</a>
+                {%- else -%}
+                  <span style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: #FFFFFF; color: #0a0a0a; border-radius: 8px; font-weight: 600;">{{ part.title }}</span>
+                {%- endif -%}
+              {%- endfor -%}
+              {%- if paginate.next -%}
+                <a href="{{ paginate.next.url }}" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #FFFFFF; text-decoration: none;">&raquo;</a>
+              {%- endif -%}
+            </nav>
+          {%- endif -%}
+        {%- endpaginate -%}
+      {%- else -%}
+        <div style="text-align: center; padding: 40px 20px;">
+          <p style="margin: 0 0 16px 0; font-size: 1.1rem; color: rgba(255,255,255,0.6);">
+            "{{ search.terms }}" için sonuç bulunamadı.
+          </p>
+          <p style="margin: 0; font-size: 0.9rem; color: rgba(255,255,255,0.4);">
+            Farklı bir arama terimi deneyebilirsiniz.
+          </p>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Arama Sonuçları",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Arama",
+      "label": "Başlık"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4,
+      "label": "Sütun sayısı"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": false,
+      "label": "Üreticiyi göster"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price",
+      "default": true,
+      "label": "Fiyatı göster"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        { "value": "adapt", "label": "Görsele uyarla" },
+        { "value": "portrait", "label": "Dikey (2:3)" },
+        { "value": "square", "label": "Kare (1:1)" }
+      ],
+      "default": "adapt",
+      "label": "Görsel oranı"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Renk şeması",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 48,
+      "unit": "px",
+      "label": "Üst boşluk"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 48,
+      "unit": "px",
+      "label": "Alt boşluk"
+    }
+  ]
+}
+{% endschema %}

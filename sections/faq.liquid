@@ -1,37 +1,271 @@
-<section class="faq-section" style="background: {{ section.settings.bg_color }};">
-  <div class="container">
-    <h2 class="section-heading">{{ section.settings.heading }}</h2>
-    <div class="faq-list">
-      {% for block in section.blocks %}
-        <div class="faq-item" {{ block.shopify_attributes }}>
-          <button class="faq-question" aria-expanded="false">
-            <span>{{ block.settings.question }}</span>
-            <span class="faq-icon">+</span>
-          </button>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">{{ block.settings.answer }}</div>
-          </div>
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    --section-padding-top: {{ section.settings.padding_top }}px;
+    --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --section-bg-color: {{ section.settings.bg_color }};
+    --section-icon-color: {{ section.settings.icon_color }};
+    --section-heading-size: {{ section.settings.heading_size }}px;
+    --section-content-width: {{ section.settings.content_width }}px;
+  }
+{%- endstyle -%}
+
+<section
+  id="shopify-section-{{ section.id }}"
+  class="section-padding color-{{ section.settings.color_scheme }}"
+  style="background-color: var(--section-bg-color);"
+>
+  <div class="page-width">
+    <div class="faq__container" style="max-width: var(--section-content-width);">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="faq__heading" style="font-size: var(--section-heading-size);">
+          {{ section.settings.heading | escape }}
+        </h2>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="faq__list" role="list">
+          {%- for block in section.blocks -%}
+            <details
+              class="faq__item faq__item--{{ section.settings.border_style }}"
+              style="margin-top: {{ block.settings.margin_top }}px; margin-bottom: {{ block.settings.margin_bottom }}px;"
+              {{ block.shopify_attributes }}
+              {% if block.settings.open_by_default %}open{% endif %}
+            >
+              <summary class="faq__question" role="button" aria-expanded="{% if block.settings.open_by_default %}true{% else %}false{% endif %}">
+                <span class="faq__question-text">{{ block.settings.question | escape }}</span>
+                <span class="faq__icon" aria-hidden="true">
+                  {% render 'icon-caret' %}
+                </span>
+              </summary>
+              <div class="faq__answer">
+                <div class="faq__answer-inner rte">
+                  {{ block.settings.answer }}
+                </div>
+              </div>
+            </details>
+          {%- endfor -%}
         </div>
-      {% endfor %}
+      {%- endif -%}
     </div>
   </div>
 </section>
 
+<style>
+  #shopify-section-{{ section.id }} .section-padding {
+    padding-top: var(--section-padding-top);
+    padding-bottom: var(--section-padding-bottom);
+  }
+
+  #shopify-section-{{ section.id }} .faq__container {
+    margin: 0 auto;
+  }
+
+  #shopify-section-{{ section.id }} .faq__heading {
+    color: var(--color-foreground, #FFFFFF);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    text-align: center;
+    margin: 0 0 48px;
+  }
+
+  #shopify-section-{{ section.id }} .faq__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  #shopify-section-{{ section.id }} .faq__item {
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .faq__item--line {
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  #shopify-section-{{ section.id }} .faq__item--boxed {
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    margin-bottom: 8px;
+  }
+
+  #shopify-section-{{ section.id }} .faq__item--none {
+    border: none;
+  }
+
+  #shopify-section-{{ section.id }} .faq__question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+    padding: 20px 0;
+    cursor: pointer;
+    list-style: none;
+    color: var(--color-foreground, #FFFFFF);
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.4;
+    transition: opacity 0.2s ease;
+  }
+
+  #shopify-section-{{ section.id }} .faq__item--boxed .faq__question {
+    padding: 20px 24px;
+  }
+
+  #shopify-section-{{ section.id }} .faq__question::-webkit-details-marker {
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .faq__question::marker {
+    display: none;
+    content: "";
+  }
+
+  #shopify-section-{{ section.id }} .faq__question:hover {
+    opacity: 0.8;
+  }
+
+  #shopify-section-{{ section.id }} .faq__question:focus-visible {
+    outline: 2px solid var(--section-icon-color, #D4A843);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  #shopify-section-{{ section.id }} .faq__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    color: var(--section-icon-color, #D4A843);
+    transition: transform 0.3s ease;
+  }
+
+  #shopify-section-{{ section.id }} .faq__icon svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  #shopify-section-{{ section.id }} .faq__item[open] .faq__icon {
+    transform: rotate(180deg);
+  }
+
+  #shopify-section-{{ section.id }} .faq__answer {
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .faq__answer-inner {
+    padding: 0 0 20px;
+    color: var(--color-foreground, #FFFFFF);
+    opacity: 0.7;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  #shopify-section-{{ section.id }} .faq__item--boxed .faq__answer-inner {
+    padding: 0 24px 20px;
+  }
+
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section.id }} .faq__heading {
+      font-size: calc(var(--section-heading-size) * 0.7) !important;
+    }
+
+    #shopify-section-{{ section.id }} .faq__question {
+      font-size: 15px;
+      padding: 16px 0;
+    }
+  }
+</style>
+
 {% schema %}
 {
-  "name": "Sıkça Sorulan Sorular",
+  "name": "Sikca Sorulan Sorular",
+  "tag": "section",
+  "class": "section-faq",
   "settings": [
     {
       "type": "text",
       "id": "heading",
-      "label": "Başlık",
-      "default": "Sıkça Sorulan Sorular"
+      "label": "Baslik",
+      "default": "Sikca Sorulan Sorular"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Baslik Boyutu",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "label": "Icerik Genisligi",
+      "min": 400,
+      "max": 1000,
+      "step": 20,
+      "unit": "px",
+      "default": 740
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Ikon Rengi",
+      "default": "#D4A843"
+    },
+    {
+      "type": "select",
+      "id": "border_style",
+      "label": "Cerceve Stili",
+      "options": [
+        { "value": "line", "label": "Alt Cizgi" },
+        { "value": "boxed", "label": "Kutulu" },
+        { "value": "none", "label": "Yok" }
+      ],
+      "default": "line"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Renk Semasi",
+      "options": [
+        { "value": "scheme-1", "label": "Sema 1" },
+        { "value": "scheme-2", "label": "Sema 2" },
+        { "value": "scheme-3", "label": "Sema 3" },
+        { "value": "inverse", "label": "Ters" }
+      ],
+      "default": "scheme-1"
     },
     {
       "type": "color",
       "id": "bg_color",
       "label": "Arka Plan Rengi",
       "default": "#0a0a0a"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Ust Bosluk",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Alt Bosluk",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
     }
   ],
   "blocks": [
@@ -43,26 +277,51 @@
           "type": "text",
           "id": "question",
           "label": "Soru",
-          "default": "Deniz tuzu spreyi nasıl kullanılır?"
+          "default": "Deniz tuzu spreyi nasil kullanilir?"
         },
         {
           "type": "richtext",
           "id": "answer",
           "label": "Cevap",
-          "default": "<p>Nemli veya kuru saçlara 2-3 sıkım uygulayın. Parmaklarınızla şekil verin ve kurumasını bekleyin. Doğal, hacimli bir görünüm elde edin.</p>"
+          "default": "<p>Nemli veya kuru saclara 2-3 sikim uygulayin. Parmaklarinizla sekil verin ve kurumasini bekleyin. Dogal, hacimli bir gorunum elde edin.</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_by_default",
+          "label": "Varsayilan Olarak Acik",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "margin_top",
+          "label": "Ust Kenar Boslugu",
+          "min": 0,
+          "max": 30,
+          "step": 2,
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "margin_bottom",
+          "label": "Alt Kenar Boslugu",
+          "min": 0,
+          "max": 30,
+          "step": 2,
+          "unit": "px",
+          "default": 0
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Sıkça Sorulan Sorular",
+      "name": "Sikca Sorulan Sorular",
       "blocks": [
-        { "type": "faq", "settings": { "question": "Deniz tuzu spreyi nasıl kullanılır?", "answer": "<p>Nemli veya kuru saçlara 2-3 sıkım uygulayın. Parmaklarınızla şekil verin ve kurumasını bekleyin.</p>" } },
-        { "type": "faq", "settings": { "question": "Hangi saç tiplerine uygun?", "answer": "<p>Tüm saç tiplerine uygundur. Özellikle düz ve ince saçlarda harika hacim ve doku sağlar.</p>" } },
-        { "type": "faq", "settings": { "question": "Saçıma zarar verir mi?", "answer": "<p>Hayır. Doğal içerikleri sayesinde saçınıza zarar vermez, aksine besleyici yardımcı olur.</p>" } },
-        { "type": "faq", "settings": { "question": "Ne kadar süre dayanır?", "answer": "<p>Günlük kullanımda yaklaşık 2-3 ay dayanır. 200ml büyük boy şişe.</p>" } },
-        { "type": "faq", "settings": { "question": "İade politikanız nedir?", "answer": "<p>30 gün içinde koşulsuz iade garantisi sunuyoruz. Memnun kalmazsanız paranızı iade ediyoruz.</p>" } }
+        { "type": "faq", "settings": { "question": "Urunler nasil kullanilir?", "answer": "<p>Nemli veya kuru saclara 2-3 sikim uygulayin. Parmaklarinizla sekil verin ve kurumasini bekleyin.</p>" } },
+        { "type": "faq", "settings": { "question": "Hangi sac tiplerine uygun?", "answer": "<p>Tum sac tiplerine uygundur. Ozellikle duz ve ince saclarda harika hacim ve doku saglar.</p>" } },
+        { "type": "faq", "settings": { "question": "Sacima zarar verir mi?", "answer": "<p>Hayir. Dogal icerikleri sayesinde saciniza zarar vermez, aksine besleyici yardimci olur.</p>" } },
+        { "type": "faq", "settings": { "question": "Iade politikaniz nedir?", "answer": "<p>30 gun icinde kosulsuz iade garantisi sunuyoruz. Memnun kalmazsaniz paranizi iade ediyoruz.</p>" } }
       ]
     }
   ]
