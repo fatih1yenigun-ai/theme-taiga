@@ -1,0 +1,395 @@
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    --section-padding-top: {{ section.settings.padding_top }}px;
+    --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --section-heading-size: {{ section.settings.heading_size }}px;
+    --section-columns: {{ section.settings.columns }};
+    --section-card-radius: {{ section.settings.card_radius }}px;
+  }
+{%- endstyle -%}
+
+{% render 'section-custom-scheme-style', section: section %}
+
+<section
+  id="shopify-section-{{ section.id }}"
+  class="section-padding color-{{ section.settings.color_scheme }}"
+>
+  <div class="page-width">
+    {%- if section.settings.heading != blank -%}
+      <div class="producer__header">
+        <h2 class="producer__heading" style="font-size: var(--section-heading-size);">
+          {{ section.settings.heading | escape }}
+        </h2>
+        {%- if section.settings.description != blank -%}
+          <p class="producer__description">{{ section.settings.description | escape }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="producer__grid" role="list">
+        {%- for block in section.blocks -%}
+          <div class="producer__card" role="listitem" {{ block.shopify_attributes }}>
+            <div class="producer__image-wrapper">
+              {%- if block.settings.image != blank -%}
+                <img
+                  class="producer__image"
+                  src="{{ block.settings.image | image_url: width: 600 }}"
+                  srcset="
+                    {{ block.settings.image | image_url: width: 400 }} 400w,
+                    {{ block.settings.image | image_url: width: 600 }} 600w
+                  "
+                  sizes="(max-width: 749px) 50vw, calc(100vw / {{ section.settings.columns }})"
+                  alt="{{ block.settings.producer_name | escape }}"
+                  width="600"
+                  height="600"
+                  loading="lazy"
+                >
+              {%- else -%}
+                <div class="producer__image-placeholder">
+                  {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                </div>
+              {%- endif -%}
+            </div>
+
+            <div class="producer__content">
+              {%- if block.settings.producer_name != blank -%}
+                <h3 class="producer__name">{{ block.settings.producer_name | escape }}</h3>
+              {%- endif -%}
+
+              {%- if block.settings.location != blank -%}
+                <span class="producer__location">
+                  <svg class="producer__pin" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  {{ block.settings.location | escape }}
+                </span>
+              {%- endif -%}
+
+              {%- if block.settings.specialty != blank -%}
+                <p class="producer__specialty">{{ block.settings.specialty | escape }}</p>
+              {%- endif -%}
+
+              {%- if block.settings.link != blank -%}
+                <a class="producer__link" href="{{ block.settings.link }}">
+                  Detayları Gör →
+                </a>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} .section-padding {
+    padding-top: var(--section-padding-top);
+    padding-bottom: var(--section-padding-bottom);
+  }
+
+  #shopify-section-{{ section.id }} .producer__header {
+    text-align: center;
+    margin-bottom: 48px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #shopify-section-{{ section.id }} .producer__heading {
+    color: rgb(var(--color-foreground));
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    margin: 0 0 12px;
+  }
+
+  #shopify-section-{{ section.id }} .producer__description {
+    color: rgb(var(--color-foreground));
+    opacity: 0.65;
+    font-size: 16px;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .producer__grid {
+    display: grid;
+    grid-template-columns: repeat(var(--section-columns, 4), 1fr);
+    gap: 24px;
+  }
+
+  #shopify-section-{{ section.id }} .producer__card {
+    background: rgb(var(--color-background));
+    border: 1px solid rgba(var(--color-foreground), 0.08);
+    border-radius: var(--section-card-radius);
+    overflow: hidden;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  #shopify-section-{{ section.id }} .producer__card:hover {
+    transform: translateY(-4px);
+  }
+
+  #shopify-section-{{ section.id }} .producer__image-wrapper {
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    position: relative;
+  }
+
+  #shopify-section-{{ section.id }} .producer__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  #shopify-section-{{ section.id }} .producer__card:hover .producer__image {
+    transform: scale(1.04);
+  }
+
+  #shopify-section-{{ section.id }} .producer__image-placeholder {
+    width: 100%;
+    height: 100%;
+    background: rgba(var(--color-foreground), 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #shopify-section-{{ section.id }} .producer__image-placeholder svg {
+    width: 50%;
+    opacity: 0.25;
+  }
+
+  #shopify-section-{{ section.id }} .producer__content {
+    padding: 20px;
+  }
+
+  #shopify-section-{{ section.id }} .producer__name {
+    color: rgb(var(--color-foreground));
+    font-size: 17px;
+    font-weight: 600;
+    margin: 0 0 8px;
+  }
+
+  #shopify-section-{{ section.id }} .producer__location {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: rgb(var(--color-foreground));
+    opacity: 0.55;
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+
+  #shopify-section-{{ section.id }} .producer__pin {
+    flex-shrink: 0;
+  }
+
+  #shopify-section-{{ section.id }} .producer__specialty {
+    color: rgb(var(--color-foreground));
+    opacity: 0.7;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0 0 12px;
+  }
+
+  #shopify-section-{{ section.id }} .producer__link {
+    color: rgb(var(--color-accent-1));
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+
+  #shopify-section-{{ section.id }} .producer__link:hover {
+    opacity: 0.75;
+  }
+
+  #shopify-section-{{ section.id }} .producer__link:focus-visible {
+    outline: 2px solid rgb(var(--color-accent-1));
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section.id }} .producer__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    #shopify-section-{{ section.id }} .producer__content {
+      padding: 14px;
+    }
+
+    #shopify-section-{{ section.id }} .producer__name {
+      font-size: 15px;
+    }
+
+    #shopify-section-{{ section.id }} .producer__heading {
+      font-size: calc(var(--section-heading-size) * 0.7) !important;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Üretici Kartları",
+  "tag": "section",
+  "class": "section-producer-cards",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Başlık",
+      "default": "Üreticilerimiz"
+    },
+    {
+      "type": "text",
+      "id": "description",
+      "label": "Açıklama",
+      "default": "Yerel üreticilerimizle doğrudan çalışıyoruz"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Başlık Boyutu",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Sütun Sayısı",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Kart Köşe Yuvarlama",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Renk Şeması",
+      "options": [
+        { "value": "background-1", "label": "Arka Plan 1" },
+        { "value": "background-2", "label": "Arka Plan 2" },
+        { "value": "accent-1", "label": "Vurgu 1" },
+        { "value": "accent-2", "label": "Vurgu 2" },
+        { "value": "inverse", "label": "Ters" },
+        { "value": "custom", "label": "Özel" }
+      ],
+      "default": "background-1"
+    },
+    {
+      "type": "color",
+      "id": "custom_bg_color",
+      "label": "Özel Arka Plan Rengi",
+      "default": "#FAF7F2",
+      "info": "Yalnızca 'Özel' renk şeması seçildiğinde etkindir"
+    },
+    {
+      "type": "color",
+      "id": "custom_text_color",
+      "label": "Özel Metin Rengi",
+      "default": "#2C2416",
+      "info": "Yalnızca 'Özel' renk şeması seçildiğinde etkindir"
+    },
+    {
+      "type": "color",
+      "id": "custom_accent_color",
+      "label": "Özel Vurgu Rengi",
+      "default": "#8B6F3A",
+      "info": "Yalnızca 'Özel' renk şeması seçildiğinde etkindir"
+    },
+    {
+      "type": "color",
+      "id": "custom_button_label_color",
+      "label": "Özel Buton Metin Rengi",
+      "default": "#FFFFFF",
+      "info": "Yalnızca 'Özel' renk şeması seçildiğinde etkindir"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Üst Boşluk",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Alt Boşluk",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "producer",
+      "name": "Üretici",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Fotoğraf"
+        },
+        {
+          "type": "text",
+          "id": "producer_name",
+          "label": "Üretici Adı",
+          "default": "Ahmet Yılmaz"
+        },
+        {
+          "type": "text",
+          "id": "location",
+          "label": "Konum",
+          "default": "Antalya, Türkiye"
+        },
+        {
+          "type": "text",
+          "id": "specialty",
+          "label": "Uzmanlık Alanı",
+          "default": "Organik zeytinyağı üretimi"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Bağlantı"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Üretici Kartları",
+      "blocks": [
+        { "type": "producer", "settings": { "producer_name": "Ahmet Yılmaz", "location": "Antalya, Türkiye", "specialty": "Organik zeytinyağı üretimi" } },
+        { "type": "producer", "settings": { "producer_name": "Ayşe Demir", "location": "İzmir, Türkiye", "specialty": "Doğal bal ve arı ürünleri" } },
+        { "type": "producer", "settings": { "producer_name": "Mehmet Kaya", "location": "Trabzon, Türkiye", "specialty": "Fındık ve kuruyemiş" } },
+        { "type": "producer", "settings": { "producer_name": "Fatma Çelik", "location": "Gaziantep, Türkiye", "specialty": "Geleneksel baharat karışımları" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

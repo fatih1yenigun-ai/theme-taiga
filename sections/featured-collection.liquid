@@ -2,7 +2,7 @@
   #shopify-section-{{ section.id }} {
     --section-padding-top: {{ section.settings.padding_top }}px;
     --section-padding-bottom: {{ section.settings.padding_bottom }}px;
-    --section-bg-color: {{ section.settings.bg_color }};
+
     --section-columns-desktop: {{ section.settings.columns_desktop }};
     --section-columns-mobile: {{ section.settings.columns_mobile }};
   }
@@ -12,10 +12,11 @@
   }
 {%- endstyle -%}
 
+{% render 'section-custom-scheme-style', section: section %}
+
 <section
   id="shopify-section-{{ section.id }}"
   class="section-padding color-{{ section.settings.color_scheme }}"
-  style="background-color: var(--section-bg-color);"
 >
   <div class="page-width">
     {%- if section.settings.heading != blank -%}
@@ -80,7 +81,7 @@
   }
 
   #shopify-section-{{ section.id }} .featured-collection__heading {
-    color: var(--color-foreground, #FFFFFF);
+    color: rgb(var(--color-foreground));
     font-weight: 700;
     letter-spacing: -0.03em;
     line-height: 1.2;
@@ -109,8 +110,8 @@
   #shopify-section-{{ section.id }} .featured-collection__view-all-btn {
     display: inline-block;
     padding: 14px 40px;
-    border: 1px solid var(--color-foreground, #FFFFFF);
-    color: var(--color-foreground, #FFFFFF);
+    border: 1px solid rgb(var(--color-foreground));
+    color: rgb(var(--color-foreground));
     background: transparent;
     text-decoration: none;
     font-size: 14px;
@@ -122,19 +123,19 @@
   }
 
   #shopify-section-{{ section.id }} .featured-collection__view-all-btn:hover {
-    background-color: var(--color-foreground, #FFFFFF);
-    color: var(--color-background, #0a0a0a);
+    background-color: rgb(var(--color-foreground));
+    color: rgb(var(--color-background));
   }
 
   #shopify-section-{{ section.id }} .featured-collection__view-all-btn:focus-visible {
-    outline: 2px solid var(--color-foreground, #FFFFFF);
+    outline: 2px solid rgb(var(--color-foreground));
     outline-offset: 3px;
   }
 
   #shopify-section-{{ section.id }} .featured-collection__placeholder {
     text-align: center;
     padding: 60px 20px;
-    color: var(--color-foreground, #FFFFFF);
+    color: rgb(var(--color-foreground));
     opacity: 0.6;
   }
 
@@ -256,20 +257,44 @@
     {
       "type": "select",
       "id": "color_scheme",
-      "label": "Renk Semasi",
+      "label": "Renk Şeması",
       "options": [
-        { "value": "scheme-1", "label": "Sema 1" },
-        { "value": "scheme-2", "label": "Sema 2" },
-        { "value": "scheme-3", "label": "Sema 3" },
-        { "value": "inverse", "label": "Ters" }
+        { "value": "background-1", "label": "Arka Plan 1" },
+        { "value": "background-2", "label": "Arka Plan 2" },
+        { "value": "accent-1", "label": "Vurgu 1" },
+        { "value": "accent-2", "label": "Vurgu 2" },
+        { "value": "inverse", "label": "Ters" },
+        { "value": "custom", "label": "Özel" }
       ],
-      "default": "scheme-1"
+      "default": "background-1"
     },
     {
       "type": "color",
-      "id": "bg_color",
-      "label": "Arka Plan Rengi",
-      "default": "#0a0a0a"
+      "id": "custom_bg_color",
+      "label": "Özel Arka Plan Rengi",
+      "default": "#0a0a0a",
+      "info": "Yalnızca 'Özel' renk şeması seçildiğinde etkindir"
+    },
+    {
+      "type": "color",
+      "id": "custom_text_color",
+      "label": "Özel Metin Rengi",
+      "default": "#FFFFFF",
+      "info": "Yalnızca 'Özel' renk şeması seçildiğinde etkindir"
+    },
+    {
+      "type": "color",
+      "id": "custom_accent_color",
+      "label": "Özel Vurgu Rengi",
+      "default": "#D4A843",
+      "info": "Yalnızca 'Özel' renk şeması seçildiğinde etkindir"
+    },
+    {
+      "type": "color",
+      "id": "custom_button_label_color",
+      "label": "Özel Buton Metin Rengi",
+      "default": "#0a0a0a",
+      "info": "Yalnızca 'Özel' renk şeması seçildiğinde etkindir"
     },
     {
       "type": "range",

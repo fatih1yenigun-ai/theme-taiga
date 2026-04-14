@@ -1,0 +1,25 @@
+{%- comment -%}
+  Emits a scoped <style> block for sections using color_scheme == 'custom'.
+  Requires the including section to define these settings:
+    - custom_bg_color (color)
+    - custom_text_color (color)
+    - custom_accent_color (color)
+    - custom_button_label_color (color)
+
+  Usage: {% render 'section-custom-scheme-style', section: section %}
+{%- endcomment -%}
+
+{%- if section.settings.color_scheme == 'custom' -%}
+  <style>
+    #shopify-section-{{ section.id }} .color-custom {
+      --color-foreground: {{ section.settings.custom_text_color.red }}, {{ section.settings.custom_text_color.green }}, {{ section.settings.custom_text_color.blue }};
+      --color-background: {{ section.settings.custom_bg_color.red }}, {{ section.settings.custom_bg_color.green }}, {{ section.settings.custom_bg_color.blue }};
+      --color-accent-1: {{ section.settings.custom_accent_color.red }}, {{ section.settings.custom_accent_color.green }}, {{ section.settings.custom_accent_color.blue }};
+      --color-button: {{ section.settings.custom_accent_color.red }}, {{ section.settings.custom_accent_color.green }}, {{ section.settings.custom_accent_color.blue }};
+      --color-button-text: {{ section.settings.custom_button_label_color.red }}, {{ section.settings.custom_button_label_color.green }}, {{ section.settings.custom_button_label_color.blue }};
+      --color-outline-button-labels: {{ section.settings.custom_text_color.red }}, {{ section.settings.custom_text_color.green }}, {{ section.settings.custom_text_color.blue }};
+      background-color: rgb(var(--color-background));
+      color: rgb(var(--color-foreground));
+    }
+  </style>
+{%- endif -%}

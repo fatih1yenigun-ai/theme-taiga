@@ -1,78 +1,208 @@
 {
   "sections": {
-    "slideshow-hero": {
-      "type": "slideshow-hero",
-      "blocks": {
-        "slide-1": {
-          "type": "slide",
-          "settings": {
-            "heading": "Premium Erkek Bakım",
-            "prefix": "BASED BODYWORKS",
-            "button_1_label": "ÜRÜNLERE GÖZ AT",
-            "overlay_opacity": 40
-          }
-        }
-      },
-      "block_order": ["slide-1"]
+    "taiga-fullbleed-video": {
+      "type": "taiga-fullbleed-video",
+      "settings": {
+        "heading": "Doğanın Çağrısına Cevap Verin",
+        "subheading": "Zorlu koşullar için tasarlanmış, doğada test edilmiş outdoor ekipmanları.",
+        "button_label": "Keşfet",
+        "button_link": "/collections/all",
+        "video_overlay_opacity": 40
+      }
     },
     "social-proof": {
       "type": "social-proof",
+      "settings": {},
       "blocks": {
-        "feat-1": { "type": "feature", "settings": { "text": "%100 Doğal İçerik" } },
-        "feat-2": { "type": "feature", "settings": { "text": "Sülfat & Paraben İçermez" } },
-        "feat-3": { "type": "feature", "settings": { "text": "Dermatolog Onaylı" } }
+        "sp-1": {
+          "type": "badge",
+          "settings": {
+            "heading": "Zorlu Koşullara Dayanıklı",
+            "text": "Tüm ürünlerimiz -30°C ile +50°C arasında test edilmiştir."
+          }
+        },
+        "sp-2": {
+          "type": "badge",
+          "settings": {
+            "heading": "Hafif & Kompakt",
+            "text": "Minimum ağırlık, maksimum performans. Her gram önemlidir."
+          }
+        },
+        "sp-3": {
+          "type": "badge",
+          "settings": {
+            "heading": "Ömür Boyu Garanti",
+            "text": "Ürünlerimizin arkasında duruyoruz. Ömür boyu garanti ile güvence altındasınız."
+          }
+        }
       },
-      "block_order": ["feat-1", "feat-2", "feat-3"]
+      "block_order": [
+        "sp-1",
+        "sp-2",
+        "sp-3"
+      ]
     },
     "featured-collection": {
       "type": "featured-collection",
       "settings": {
-        "heading": "En Çok Satanlar",
-        "products_to_show": 4,
-        "columns_desktop": 4
+        "heading": "Öne Çıkan Ekipmanlar",
+        "collection": "all",
+        "products_to_show": 4
       }
     },
     "image-with-text": {
       "type": "image-with-text",
-      "settings": {}
+      "settings": {
+        "heading": "Macera İçin Üretildi",
+        "text": "<p>Her ürünümüz gerçek maceraperestler tarafından, gerçek koşullarda test edilir. Karadeniz yaylalarından Kaçkar zirvelerine, Likya Yolu'ndan Kapadokya vadilerine kadar Türkiye'nin en zorlu rotalarında kanıtlanmış performans.</p>",
+        "button_label": "Hikayemizi Okuyun",
+        "button_link": "/pages/hakkimizda"
+      }
     },
     "why-choose": {
       "type": "why-choose",
-      "blocks": {
-        "r-1": { "type": "reason", "settings": { "title": "Doğal Formül", "description": "Zararlı kimyasallar içermeyen, doğal içeriklerle zenginleştirilmiş." } },
-        "r-2": { "type": "reason", "settings": { "title": "Bilimsel Yaklaşım", "description": "Dermatologlar tarafından test edilmiş ve onaylanmıştır." } },
-        "r-3": { "type": "reason", "settings": { "title": "Sürdürülebilir", "description": "Çevre dostu ambalaj ve sürdürülebilir üretim." } },
-        "r-4": { "type": "reason", "settings": { "title": "Hızlı Kargo", "description": "Siparişleriniz 1-3 iş günü içinde kapınızda." } }
+      "settings": {
+        "heading": "Neden Taiga?"
       },
-      "block_order": ["r-1", "r-2", "r-3", "r-4"]
+      "blocks": {
+        "wc-1": {
+          "type": "reason",
+          "settings": {
+            "heading": "Askeri Kalite Malzeme",
+            "text": "Askeri standartlarda dayanıklılık testlerinden geçen premium malzemeler."
+          }
+        },
+        "wc-2": {
+          "type": "reason",
+          "settings": {
+            "heading": "Doğada Test Edildi",
+            "text": "Her ürün piyasaya çıkmadan önce zorlu arazi koşullarında kapsamlı testlerden geçer."
+          }
+        },
+        "wc-3": {
+          "type": "reason",
+          "settings": {
+            "heading": "Çevre Dostu",
+            "text": "Geri dönüştürülmüş malzemeler ve sürdürülebilir üretim süreçleri."
+          }
+        },
+        "wc-4": {
+          "type": "reason",
+          "settings": {
+            "heading": "Hızlı Kargo",
+            "text": "Maceranız bekleyemez. Siparişiniz aynı gün kargoya verilir."
+          }
+        }
+      },
+      "block_order": [
+        "wc-1",
+        "wc-2",
+        "wc-3",
+        "wc-4"
+      ]
     },
     "testimonials": {
       "type": "testimonials",
       "settings": {
-        "heading": "Müşterilerimiz Ne Diyor?"
+        "heading": "Maceraperestlerin Yorumları"
       },
       "blocks": {
-        "t-1": { "type": "testimonial", "settings": { "rating": 5, "text": "<p>Saçlarıma inanılmaz doku ve hacim veriyor. Kesinlikle tavsiye ederim.</p>", "author": "Ahmet K." } },
-        "t-2": { "type": "testimonial", "settings": { "rating": 5, "text": "<p>Doğal içerikleri sayesinde saçım çok daha sağlıklı görünüyor.</p>", "author": "Mehmet Y." } },
-        "t-3": { "type": "testimonial", "settings": { "rating": 4, "text": "<p>Kokusu harika ve gün boyu kalıcı. Çok memnunum.</p>", "author": "Burak S." } }
+        "t-1": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "text": "<p>Kaçkar zirvesine tırmanışta bu çantayı kullandım. Sırt desteği mükemmel, ağırlığı hissettirmiyor. Yağmurda bile içerisi kuru kaldı. Ciddi dağcılık için kesinlikle tavsiye ederim.</p>",
+            "author": "Oğuz K.",
+            "title": "Doğrulanmış Alıcı",
+            "date": "2025-12-10"
+          }
+        },
+        "t-2": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "text": "<p>Likya Yolu'nu 20 günde yürüdüm, bu botlarla tek bir su toplaması bile olmadı. Kayalık zeminlerde tutuşu harika. Yatırım yapılacak bir ürün, kesinlikle değer.</p>",
+            "author": "Elif A.",
+            "title": "Doğrulanmış Alıcı",
+            "date": "2025-11-18"
+          }
+        },
+        "t-3": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 4,
+            "text": "<p>Kamp çadırını ilk kez şiddetli fırtınada test ettim. Rüzgara karşı inanılmaz dayanıklı ve kurulumu çok kolay. Hafifliği sayesinde uzun yürüyüşlerde ekstra yük olmuyor.</p>",
+            "author": "Barış M.",
+            "title": "Doğrulanmış Alıcı",
+            "date": "2025-10-25"
+          }
+        }
       },
-      "block_order": ["t-1", "t-2", "t-3"]
+      "block_order": [
+        "t-1",
+        "t-2",
+        "t-3"
+      ]
+    },
+    "faq": {
+      "type": "faq",
+      "settings": {
+        "heading": "Sıkça Sorulan Sorular"
+      },
+      "blocks": {
+        "faq-1": {
+          "type": "question",
+          "settings": {
+            "question": "Ürünleriniz gerçekten zorlu koşullara dayanıklı mı?",
+            "answer": "<p>Evet, tüm ürünlerimiz -30°C ile +50°C arasında, yüksek nem ve UV koşullarında test edilmektedir. Askeri standartlardaki dayanıklılık testlerinden geçen malzemeler kullanıyoruz.</p>"
+          }
+        },
+        "faq-2": {
+          "type": "question",
+          "settings": {
+            "question": "Ömür boyu garanti nasıl işliyor?",
+            "answer": "<p>Ürünlerimiz üretim hatalarına karşı ömür boyu garantilidir. Normal kullanımda oluşan hasarlarda ücretsiz onarım veya değişim yapılır. Detaylar için garanti politikamızı inceleyebilirsiniz.</p>"
+          }
+        },
+        "faq-3": {
+          "type": "question",
+          "settings": {
+            "question": "Hangi malzemeler kullanılıyor?",
+            "answer": "<p>Ripstop naylon, Cordura kumaş, alüminyum alaşım, GORE-TEX membran ve Vibram taban gibi endüstri lideri malzemeleri kullanıyoruz. Her malzeme performans ve dayanıklılık için seçilir.</p>"
+          }
+        },
+        "faq-4": {
+          "type": "question",
+          "settings": {
+            "question": "İade ve değişim yapabilir miyim?",
+            "answer": "<p>Elbette. Ürünü teslim aldıktan sonra 30 gün içinde kullanılmamış olması koşuluyla iade veya değişim yapabilirsiniz. Üretim hatalı ürünlerde süre sınırı yoktur.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq-1",
+        "faq-2",
+        "faq-3",
+        "faq-4"
+      ]
     },
     "newsletter": {
       "type": "newsletter",
       "settings": {
-        "heading": "Bültene Abone Olun",
-        "description": "<p>İndirimler ve yeni ürünlerden ilk siz haberdar olun.</p>"
+        "heading": "Macera Bültenine Katılın",
+        "subheading": "Yeni ekipmanlar, rota önerileri ve outdoor ipuçları için kayıt olun.",
+        "button_label": "Abone Ol"
       }
     }
   },
   "order": [
-    "slideshow-hero",
+    "taiga-fullbleed-video",
     "social-proof",
     "featured-collection",
     "image-with-text",
     "why-choose",
     "testimonials",
+    "faq",
     "newsletter"
   ]
 }

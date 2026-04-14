@@ -1,0 +1,411 @@
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    --section-padding-top: {{ section.settings.padding_top }}px;
+    --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --section-heading-size: {{ section.settings.heading_size }}px;
+    --section-accent: {{ section.settings.accent_color }};
+    --section-row-border: {{ section.settings.row_border_color }};
+  }
+{%- endstyle -%}
+
+{% render 'section-custom-scheme-style', section: section %}
+
+<section
+  id="shopify-section-{{ section.id }}"
+  class="section-padding color-{{ section.settings.color_scheme }}"
+>
+  <div class="page-width">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="spec-table__heading" style="font-size: var(--section-heading-size);">
+        {{ section.settings.heading | escape }}
+      </h2>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="spec-table__wrapper">
+        <table class="spec-table" role="table">
+          <thead>
+            <tr>
+              <th class="spec-table__corner" aria-label="Özellik"></th>
+              {%- for block in section.blocks -%}
+                <th
+                  class="spec-table__product-header{% if block.settings.highlight %} spec-table__product-header--highlight{% endif %}"
+                  {{ block.shopify_attributes }}
+                >
+                  {%- if block.settings.image != blank -%}
+                    <img
+                      class="spec-table__product-img"
+                      src="{{ block.settings.image | image_url: width: 200 }}"
+                      alt="{{ block.settings.product_name | escape }}"
+                      width="80"
+                      height="80"
+                      loading="lazy"
+                    >
+                  {%- endif -%}
+                  <span class="spec-table__product-name">{{ block.settings.product_name | escape }}</span>
+                  {%- if block.settings.highlight -%}
+                    <span class="spec-table__badge">Önerilen</span>
+                  {%- endif -%}
+                </th>
+              {%- endfor -%}
+            </tr>
+          </thead>
+          <tbody>
+            {%- for i in (1..6) -%}
+              {%- assign label_key = 'spec_' | append: i | append: '_label' -%}
+              {%- assign has_row = false -%}
+              {%- for block in section.blocks -%}
+                {%- if block.settings[label_key] != blank -%}
+                  {%- assign has_row = true -%}
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+
+              {%- if has_row -%}
+                <tr>
+                  <td class="spec-table__label">
+                    {{ section.blocks.first.settings[label_key] | escape }}
+                  </td>
+                  {%- for block in section.blocks -%}
+                    {%- assign value_key = 'spec_' | append: i | append: '_value' -%}
+                    <td class="spec-table__value{% if block.settings.highlight %} spec-table__value--highlight{% endif %}">
+                      {{ block.settings[value_key] | escape }}
+                    </td>
+                  {%- endfor -%}
+                </tr>
+              {%- endif -%}
+            {%- endfor -%}
+          </tbody>
+        </table>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} .section-padding {
+    padding-top: var(--section-padding-top);
+    padding-bottom: var(--section-padding-bottom);
+  }
+
+  #shopify-section-{{ section.id }} .spec-table__heading {
+    color: rgb(var(--color-foreground));
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    text-align: center;
+    margin: 0 0 48px;
+  }
+
+  #shopify-section-{{ section.id }} .spec-table__wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #shopify-section-{{ section.id }} .spec-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 500px;
+  }
+
+  #shopify-section-{{ section.id }} .spec-table__corner {
+    width: 160px;
+  }
+
+  #shopify-section-{{ section.id }} .spec-table__product-header {
+    text-align: center;
+    padding: 24px 16px;
+    vertical-align: bottom;
+    border-bottom: 2px solid var(--section-row-border, rgba(255,255,255,0.08));
+  }
+
+  #shopify-section-{{ section.id }} .spec-table__product-header--highlight {
+    background: rgba(0, 210, 211, 0.06);
+    border-bottom-color: var(--section-accent, #00D2D3);
+  }
+
+  #shopify-section-{{ section.id }} .spec-table__product-img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 12px;
+    border-radius: 8px;
+  }
+
+  #shopify-section-{{ section.id }} .spec-table__product-name {
+    display: block;
+    color: rgb(var(--color-foreground));
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  #shopify-section-{{ section.id }} .spec-table__badge {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 3px 10px;
+    background: var(--section-accent, #00D2D3);
+    color: #0a0a0a;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-radius: 20px;
+  }
+
+  #shopify-section-{{ section.id }} .spec-table__label {
+    padding: 16px 20px;
+    color: rgb(var(--color-foreground));
+    opacity: 0.6;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: left;
+    border-bottom: 1px solid var(--section-row-border, rgba(255,255,255,0.06));
+  }
+
+  #shopify-section-{{ section.id }} .spec-table__value {
+    padding: 16px 20px;
+    color: rgb(var(--color-foreground));
+    font-size: 14px;
+    text-align: center;
+    border-bottom: 1px solid var(--section-row-border, rgba(255,255,255,0.06));
+  }
+
+  #shopify-section-{{ section.id }} .spec-table__value--highlight {
+    background: rgba(0, 210, 211, 0.04);
+    font-weight: 600;
+    color: var(--section-accent, #00D2D3);
+  }
+
+  #shopify-section-{{ section.id }} tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section.id }} .spec-table__heading {
+      font-size: calc(var(--section-heading-size) * 0.7) !important;
+    }
+
+    #shopify-section-{{ section.id }} .spec-table__corner {
+      width: 100px;
+    }
+
+    #shopify-section-{{ section.id }} .spec-table__product-img {
+      width: 56px;
+      height: 56px;
+    }
+
+    #shopify-section-{{ section.id }} .spec-table__label,
+    #shopify-section-{{ section.id }} .spec-table__value {
+      padding: 12px 10px;
+      font-size: 13px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Ürün Karşılaştırma Tablosu",
+  "tag": "section",
+  "class": "section-spec-table",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Başlık",
+      "default": "Ürün Karşılaştırma"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Başlık Boyutu",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Vurgu Rengi",
+      "default": "#00D2D3"
+    },
+    {
+      "type": "color",
+      "id": "row_border_color",
+      "label": "Satır Çizgi Rengi",
+      "default": "#1a1a2e"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Renk Şeması",
+      "options": [
+        { "value": "background-1", "label": "Arka Plan 1" },
+        { "value": "background-2", "label": "Arka Plan 2" },
+        { "value": "accent-1", "label": "Vurgu 1" },
+        { "value": "accent-2", "label": "Vurgu 2" },
+        { "value": "inverse", "label": "Ters" },
+        { "value": "custom", "label": "Özel" }
+      ],
+      "default": "background-1"
+    },
+    {
+      "type": "color",
+      "id": "custom_bg_color",
+      "label": "Özel Arka Plan Rengi",
+      "default": "#0a0a14",
+      "info": "Yalnızca 'Özel' renk şeması seçildiğinde etkindir"
+    },
+    {
+      "type": "color",
+      "id": "custom_text_color",
+      "label": "Özel Metin Rengi",
+      "default": "#E8E8E8",
+      "info": "Yalnızca 'Özel' renk şeması seçildiğinde etkindir"
+    },
+    {
+      "type": "color",
+      "id": "custom_accent_color",
+      "label": "Özel Vurgu Rengi",
+      "default": "#00D2D3",
+      "info": "Yalnızca 'Özel' renk şeması seçildiğinde etkindir"
+    },
+    {
+      "type": "color",
+      "id": "custom_button_label_color",
+      "label": "Özel Buton Metin Rengi",
+      "default": "#0a0a0a",
+      "info": "Yalnızca 'Özel' renk şeması seçildiğinde etkindir"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Üst Boşluk",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Alt Boşluk",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product_column",
+      "name": "Ürün Sütunu",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Ürün Görseli"
+        },
+        {
+          "type": "text",
+          "id": "product_name",
+          "label": "Ürün Adı",
+          "default": "Pro Model X"
+        },
+        {
+          "type": "checkbox",
+          "id": "highlight",
+          "label": "Öne Çıkar",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "spec_1_label",
+          "label": "Özellik 1 — Etiket",
+          "default": "İşlemci"
+        },
+        {
+          "type": "text",
+          "id": "spec_1_value",
+          "label": "Özellik 1 — Değer",
+          "default": "Snapdragon 8 Gen 3"
+        },
+        {
+          "type": "text",
+          "id": "spec_2_label",
+          "label": "Özellik 2 — Etiket",
+          "default": "RAM"
+        },
+        {
+          "type": "text",
+          "id": "spec_2_value",
+          "label": "Özellik 2 — Değer",
+          "default": "12 GB"
+        },
+        {
+          "type": "text",
+          "id": "spec_3_label",
+          "label": "Özellik 3 — Etiket",
+          "default": "Depolama"
+        },
+        {
+          "type": "text",
+          "id": "spec_3_value",
+          "label": "Özellik 3 — Değer",
+          "default": "256 GB"
+        },
+        {
+          "type": "text",
+          "id": "spec_4_label",
+          "label": "Özellik 4 — Etiket",
+          "default": "Batarya"
+        },
+        {
+          "type": "text",
+          "id": "spec_4_value",
+          "label": "Özellik 4 — Değer",
+          "default": "5000 mAh"
+        },
+        {
+          "type": "text",
+          "id": "spec_5_label",
+          "label": "Özellik 5 — Etiket",
+          "default": "Ekran"
+        },
+        {
+          "type": "text",
+          "id": "spec_5_value",
+          "label": "Özellik 5 — Değer",
+          "default": "6.7\" AMOLED 120Hz"
+        },
+        {
+          "type": "text",
+          "id": "spec_6_label",
+          "label": "Özellik 6 — Etiket"
+        },
+        {
+          "type": "text",
+          "id": "spec_6_value",
+          "label": "Özellik 6 — Değer"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Ürün Karşılaştırma Tablosu",
+      "blocks": [
+        { "type": "product_column", "settings": { "product_name": "Standart", "spec_1_label": "İşlemci", "spec_1_value": "A15 Bionic", "spec_2_label": "RAM", "spec_2_value": "6 GB", "spec_3_label": "Depolama", "spec_3_value": "128 GB", "spec_4_label": "Batarya", "spec_4_value": "3200 mAh", "spec_5_label": "Ekran", "spec_5_value": "6.1\" OLED" } },
+        { "type": "product_column", "settings": { "product_name": "Pro", "highlight": true, "spec_1_label": "İşlemci", "spec_1_value": "A17 Pro", "spec_2_label": "RAM", "spec_2_value": "8 GB", "spec_3_label": "Depolama", "spec_3_value": "256 GB", "spec_4_label": "Batarya", "spec_4_value": "4422 mAh", "spec_5_label": "Ekran", "spec_5_value": "6.7\" AMOLED 120Hz" } },
+        { "type": "product_column", "settings": { "product_name": "Lite", "spec_1_label": "İşlemci", "spec_1_value": "A14 Bionic", "spec_2_label": "RAM", "spec_2_value": "4 GB", "spec_3_label": "Depolama", "spec_3_value": "64 GB", "spec_4_label": "Batarya", "spec_4_value": "2800 mAh", "spec_5_label": "Ekran", "spec_5_value": "5.4\" OLED" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

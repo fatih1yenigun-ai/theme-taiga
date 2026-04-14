@@ -8,8 +8,10 @@
   }
 {%- endstyle -%}
 
+{% render 'section-custom-scheme-style', section: section %}
+
 <section class="icons-bar icons-bar-{{ section.id }} section-padding color-{{ section.settings.color_scheme }}"
-  style="background: {{ section.settings.bg_color }}; border-top: {{ section.settings.border_width }}px solid {{ section.settings.border_color }}; border-bottom: {{ section.settings.border_width }}px solid {{ section.settings.border_color }};"
+  style="border-top: {{ section.settings.border_width }}px solid {{ section.settings.border_color }}; border-bottom: {{ section.settings.border_width }}px solid {{ section.settings.border_color }};"
 >
   <div class="page-width">
     {%- if section.settings.heading != blank -%}
@@ -178,21 +180,44 @@
     {
       "type": "select",
       "id": "color_scheme",
-      "label": "Renk şeması",
-      "default": "background-2",
+      "label": "Renk Şeması",
       "options": [
+        { "value": "background-1", "label": "Arka Plan 1" },
+        { "value": "background-2", "label": "Arka Plan 2" },
         { "value": "accent-1", "label": "Vurgu 1" },
         { "value": "accent-2", "label": "Vurgu 2" },
-        { "value": "background-1", "label": "Arka plan 1" },
-        { "value": "background-2", "label": "Arka plan 2" },
-        { "value": "inverse", "label": "Ters" }
-      ]
+        { "value": "inverse", "label": "Ters" },
+        { "value": "custom", "label": "Özel" }
+      ],
+      "default": "background-2"
     },
     {
       "type": "color",
-      "id": "bg_color",
-      "label": "Arka plan rengi",
-      "default": "#141414"
+      "id": "custom_bg_color",
+      "label": "Özel Arka Plan Rengi",
+      "default": "#141414",
+      "info": "Yalnızca 'Özel' renk şeması seçildiğinde etkindir"
+    },
+    {
+      "type": "color",
+      "id": "custom_text_color",
+      "label": "Özel Metin Rengi",
+      "default": "#FFFFFF",
+      "info": "Yalnızca 'Özel' renk şeması seçildiğinde etkindir"
+    },
+    {
+      "type": "color",
+      "id": "custom_accent_color",
+      "label": "Özel Vurgu Rengi",
+      "default": "#D4A843",
+      "info": "Yalnızca 'Özel' renk şeması seçildiğinde etkindir"
+    },
+    {
+      "type": "color",
+      "id": "custom_button_label_color",
+      "label": "Özel Buton Metin Rengi",
+      "default": "#0a0a0a",
+      "info": "Yalnızca 'Özel' renk şeması seçildiğinde etkindir"
     },
     {
       "type": "range",

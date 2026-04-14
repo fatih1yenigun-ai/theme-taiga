@@ -2,16 +2,16 @@
   #shopify-section-{{ section.id }} {
     --section-padding-top: {{ section.settings.padding_top }}px;
     --section-padding-bottom: {{ section.settings.padding_bottom }}px;
-    --section-bg-color: {{ section.settings.bg_color }};
-    --section-text-color: {{ section.settings.text_color }};
+
     --section-heading-size: {{ section.settings.heading_size }}px;
   }
 {%- endstyle -%}
 
+{% render 'section-custom-scheme-style', section: section %}
+
 <section
   id="shopify-section-{{ section.id }}"
   class="section-padding color-{{ section.settings.color_scheme }}"
-  style="background-color: var(--section-bg-color); color: var(--section-text-color);"
 >
   <div class="page-width">
     <div class="newsletter__container newsletter__container--{{ section.settings.layout }}">
@@ -148,14 +148,14 @@
   }
 
   #shopify-section-{{ section.id }} .newsletter__heading {
-    color: var(--section-text-color, #FFFFFF);
+    color: rgb(var(--color-foreground));
     font-weight: 700;
     letter-spacing: -0.03em;
     line-height: 1.2;
   }
 
   #shopify-section-{{ section.id }} .newsletter__text {
-    color: var(--section-text-color, #FFFFFF);
+    color: rgb(var(--color-foreground));
     opacity: 0.7;
     font-size: 16px;
     line-height: 1.7;
@@ -183,14 +183,14 @@
     border-right: none;
     border-radius: 8px 0 0 8px;
     background: rgba(255,255,255,0.05);
-    color: var(--section-text-color, #FFFFFF);
+    color: rgb(var(--color-foreground));
     font-size: 15px;
     outline: none;
     transition: border-color 0.2s ease;
   }
 
   #shopify-section-{{ section.id }} .newsletter__input::placeholder {
-    color: var(--section-text-color, #FFFFFF);
+    color: rgb(var(--color-foreground));
     opacity: 0.4;
   }
 
@@ -216,8 +216,8 @@
 
   #shopify-section-{{ section.id }} .newsletter__button.button--secondary {
     background-color: transparent;
-    border: 1px solid var(--section-text-color, #FFFFFF);
-    color: var(--section-text-color, #FFFFFF);
+    border: 1px solid rgb(var(--color-foreground));
+    color: rgb(var(--color-foreground));
   }
 
   #shopify-section-{{ section.id }} .newsletter__button:hover {
@@ -363,26 +363,44 @@
     {
       "type": "select",
       "id": "color_scheme",
-      "label": "Renk Semasi",
+      "label": "Renk Şeması",
       "options": [
-        { "value": "scheme-1", "label": "Sema 1" },
-        { "value": "scheme-2", "label": "Sema 2" },
-        { "value": "scheme-3", "label": "Sema 3" },
-        { "value": "inverse", "label": "Ters" }
+        { "value": "background-1", "label": "Arka Plan 1" },
+        { "value": "background-2", "label": "Arka Plan 2" },
+        { "value": "accent-1", "label": "Vurgu 1" },
+        { "value": "accent-2", "label": "Vurgu 2" },
+        { "value": "inverse", "label": "Ters" },
+        { "value": "custom", "label": "Özel" }
       ],
-      "default": "scheme-1"
+      "default": "background-1"
     },
     {
       "type": "color",
-      "id": "bg_color",
-      "label": "Arka Plan Rengi",
-      "default": "#141414"
+      "id": "custom_bg_color",
+      "label": "Özel Arka Plan Rengi",
+      "default": "#141414",
+      "info": "Yalnızca 'Özel' renk şeması seçildiğinde etkindir"
     },
     {
       "type": "color",
-      "id": "text_color",
-      "label": "Metin Rengi",
-      "default": "#FFFFFF"
+      "id": "custom_text_color",
+      "label": "Özel Metin Rengi",
+      "default": "#FFFFFF",
+      "info": "Yalnızca 'Özel' renk şeması seçildiğinde etkindir"
+    },
+    {
+      "type": "color",
+      "id": "custom_accent_color",
+      "label": "Özel Vurgu Rengi",
+      "default": "#D4A843",
+      "info": "Yalnızca 'Özel' renk şeması seçildiğinde etkindir"
+    },
+    {
+      "type": "color",
+      "id": "custom_button_label_color",
+      "label": "Özel Buton Metin Rengi",
+      "default": "#0a0a0a",
+      "info": "Yalnızca 'Özel' renk şeması seçildiğinde etkindir"
     },
     {
       "type": "range",

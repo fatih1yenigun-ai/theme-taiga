@@ -1,0 +1,372 @@
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    --section-padding-top: {{ section.settings.padding_top }}px;
+    --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --section-heading-size: {{ section.settings.heading_size }}px;
+    --section-columns: {{ section.settings.columns }};
+    --section-card-radius: {{ section.settings.card_radius }}px;
+  }
+{%- endstyle -%}
+
+{% render 'section-custom-scheme-style', section: section %}
+
+<section
+  id="shopify-section-{{ section.id }}"
+  class="section-padding color-{{ section.settings.color_scheme }}"
+>
+  <div class="page-width">
+    {%- if section.settings.heading != blank -%}
+      <div class="shade-finder__header">
+        <h2 class="shade-finder__heading" style="font-size: var(--section-heading-size);">
+          {{ section.settings.heading | escape }}
+        </h2>
+        {%- if section.settings.description != blank -%}
+          <p class="shade-finder__description">{{ section.settings.description | escape }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="shade-finder__grid" role="list">
+        {%- for block in section.blocks -%}
+          <a
+            class="shade-finder__card"
+            {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %}
+            role="listitem"
+            {{ block.shopify_attributes }}
+          >
+            <div class="shade-finder__image-wrapper">
+              {%- if block.settings.image != blank -%}
+                <img
+                  class="shade-finder__image"
+                  src="{{ block.settings.image | image_url: width: 480 }}"
+                  srcset="
+                    {{ block.settings.image | image_url: width: 320 }} 320w,
+                    {{ block.settings.image | image_url: width: 480 }} 480w
+                  "
+                  sizes="(max-width: 749px) 50vw, calc(100vw / {{ section.settings.columns }})"
+                  alt="{{ block.settings.shade_name | escape }}"
+                  width="480"
+                  height="480"
+                  loading="lazy"
+                >
+              {%- else -%}
+                <div class="shade-finder__image-placeholder">
+                  {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                </div>
+              {%- endif -%}
+            </div>
+
+            <div class="shade-finder__content">
+              {%- if block.settings.shade_name != blank -%}
+                <h3 class="shade-finder__name">{{ block.settings.shade_name | escape }}</h3>
+              {%- endif -%}
+
+              {%- if block.settings.description != blank -%}
+                <p class="shade-finder__text">{{ block.settings.description | escape }}</p>
+              {%- endif -%}
+
+              {%- if block.settings.link != blank -%}
+                <span class="shade-finder__cta" aria-hidden="true">Keşfet →</span>
+              {%- endif -%}
+            </div>
+          </a>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} .section-padding {
+    padding-top: var(--section-padding-top);
+    padding-bottom: var(--section-padding-bottom);
+  }
+
+  #shopify-section-{{ section.id }} .shade-finder__header {
+    text-align: center;
+    margin-bottom: 48px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #shopify-section-{{ section.id }} .shade-finder__heading {
+    color: rgb(var(--color-foreground));
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    margin: 0 0 12px;
+  }
+
+  #shopify-section-{{ section.id }} .shade-finder__description {
+    color: rgb(var(--color-foreground));
+    opacity: 0.65;
+    font-size: 16px;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .shade-finder__grid {
+    display: grid;
+    grid-template-columns: repeat(var(--section-columns, 4), 1fr);
+    gap: 20px;
+  }
+
+  #shopify-section-{{ section.id }} .shade-finder__card {
+    background: rgb(var(--color-background));
+    border: 1px solid rgba(var(--color-foreground), 0.06);
+    border-radius: var(--section-card-radius);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  #shopify-section-{{ section.id }} .shade-finder__card:hover {
+    transform: translateY(-4px);
+  }
+
+  #shopify-section-{{ section.id }} .shade-finder__card:focus-visible {
+    outline: 2px solid rgb(var(--color-accent-1));
+    outline-offset: 2px;
+  }
+
+  #shopify-section-{{ section.id }} .shade-finder__image-wrapper {
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    position: relative;
+  }
+
+  #shopify-section-{{ section.id }} .shade-finder__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  #shopify-section-{{ section.id }} .shade-finder__card:hover .shade-finder__image {
+    transform: scale(1.05);
+  }
+
+  #shopify-section-{{ section.id }} .shade-finder__image-placeholder {
+    width: 100%;
+    height: 100%;
+    background: rgba(var(--color-foreground), 0.04);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #shopify-section-{{ section.id }} .shade-finder__image-placeholder svg {
+    width: 50%;
+    opacity: 0.2;
+  }
+
+  #shopify-section-{{ section.id }} .shade-finder__content {
+    padding: 20px;
+  }
+
+  #shopify-section-{{ section.id }} .shade-finder__name {
+    color: rgb(var(--color-foreground));
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 6px;
+  }
+
+  #shopify-section-{{ section.id }} .shade-finder__text {
+    color: rgb(var(--color-foreground));
+    opacity: 0.6;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0 0 12px;
+  }
+
+  #shopify-section-{{ section.id }} .shade-finder__cta {
+    color: rgb(var(--color-accent-1));
+    font-size: 13px;
+    font-weight: 600;
+    transition: opacity 0.2s ease;
+  }
+
+  #shopify-section-{{ section.id }} .shade-finder__card:hover .shade-finder__cta {
+    opacity: 0.75;
+  }
+
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section.id }} .shade-finder__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    #shopify-section-{{ section.id }} .shade-finder__content {
+      padding: 14px;
+    }
+
+    #shopify-section-{{ section.id }} .shade-finder__name {
+      font-size: 14px;
+    }
+
+    #shopify-section-{{ section.id }} .shade-finder__heading {
+      font-size: calc(var(--section-heading-size) * 0.7) !important;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Cilt Tonu Bulucu",
+  "tag": "section",
+  "class": "section-shade-finder",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Başlık",
+      "default": "Cilt Tonunuzu Bulun"
+    },
+    {
+      "type": "text",
+      "id": "description",
+      "label": "Açıklama",
+      "default": "Size en uygun tonu keşfedin"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Başlık Boyutu",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Sütun Sayısı",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Kart Köşe Yuvarlama",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Renk Şeması",
+      "options": [
+        { "value": "background-1", "label": "Arka Plan 1" },
+        { "value": "background-2", "label": "Arka Plan 2" },
+        { "value": "accent-1", "label": "Vurgu 1" },
+        { "value": "accent-2", "label": "Vurgu 2" },
+        { "value": "inverse", "label": "Ters" },
+        { "value": "custom", "label": "Özel" }
+      ],
+      "default": "background-1"
+    },
+    {
+      "type": "color",
+      "id": "custom_bg_color",
+      "label": "Özel Arka Plan Rengi",
+      "default": "#FFF5F5",
+      "info": "Yalnızca 'Özel' renk şeması seçildiğinde etkindir"
+    },
+    {
+      "type": "color",
+      "id": "custom_text_color",
+      "label": "Özel Metin Rengi",
+      "default": "#3D2C2C",
+      "info": "Yalnızca 'Özel' renk şeması seçildiğinde etkindir"
+    },
+    {
+      "type": "color",
+      "id": "custom_accent_color",
+      "label": "Özel Vurgu Rengi",
+      "default": "#C77D7D",
+      "info": "Yalnızca 'Özel' renk şeması seçildiğinde etkindir"
+    },
+    {
+      "type": "color",
+      "id": "custom_button_label_color",
+      "label": "Özel Buton Metin Rengi",
+      "default": "#FFFFFF",
+      "info": "Yalnızca 'Özel' renk şeması seçildiğinde etkindir"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Üst Boşluk",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Alt Boşluk",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "shade",
+      "name": "Cilt Tonu",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Görsel"
+        },
+        {
+          "type": "text",
+          "id": "shade_name",
+          "label": "Ton Adı",
+          "default": "Açık Ten"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Açıklama",
+          "default": "Açık ve hassas ciltler için özel formül"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Bağlantı"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Cilt Tonu Bulucu",
+      "blocks": [
+        { "type": "shade", "settings": { "shade_name": "Açık Ten", "description": "Açık ve hassas ciltler için özel formül" } },
+        { "type": "shade", "settings": { "shade_name": "Orta Ten", "description": "Dengeli ve doğal görünüm sağlar" } },
+        { "type": "shade", "settings": { "shade_name": "Bronz Ten", "description": "Sıcak ve parlak bir görünüm verir" } },
+        { "type": "shade", "settings": { "shade_name": "Koyu Ten", "description": "Zengin ve derin tonlar için formüle edilmiştir" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

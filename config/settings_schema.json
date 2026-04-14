@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "Taiga",
-    "theme_version": "1.0.0",
+    "theme_version": "2.0.0",
     "theme_author": "Standart Theme",
     "theme_documentation_url": "",
     "theme_support_url": ""
@@ -268,6 +268,11 @@
         "id": "rtl_enabled_languages",
         "label": "RTL etkin diller",
         "info": "Virgülle ayırın: ar, he, fa"
+      },
+      {
+        "type": "checkbox",
+        "id": "display_store_languages",
+        "label": "Eklenen mağaza dillerini ve kodlarını göster"
       }
     ]
   },
@@ -429,10 +434,22 @@
         "default": "glow",
         "label": "Bağlantı düğmesi hover",
         "options": [
-          { "value": "glow", "label": "Parlama" },
-          { "value": "center", "label": "Merkez" },
-          { "value": "left", "label": "Sol" },
-          { "value": "arrow", "label": "Ok" }
+          {
+            "value": "glow",
+            "label": "Parlama"
+          },
+          {
+            "value": "center",
+            "label": "Merkez"
+          },
+          {
+            "value": "left",
+            "label": "Sol"
+          },
+          {
+            "value": "arrow",
+            "label": "Ok"
+          }
         ]
       },
       {
@@ -441,10 +458,22 @@
         "default": "glow",
         "label": "Aksiyon düğmesi hover",
         "options": [
-          { "value": "glow", "label": "Parlama" },
-          { "value": "center", "label": "Merkez" },
-          { "value": "left", "label": "Sol" },
-          { "value": "arrow", "label": "Ok" }
+          {
+            "value": "glow",
+            "label": "Parlama"
+          },
+          {
+            "value": "center",
+            "label": "Merkez"
+          },
+          {
+            "value": "left",
+            "label": "Sol"
+          },
+          {
+            "value": "arrow",
+            "label": "Ok"
+          }
         ]
       },
       {
@@ -536,10 +565,22 @@
         "default": "bottom_left",
         "label": "Rozet konumu",
         "options": [
-          { "value": "top_left", "label": "Sol üst" },
-          { "value": "top_right", "label": "Sağ üst" },
-          { "value": "bottom_left", "label": "Sol alt" },
-          { "value": "bottom_right", "label": "Sağ alt" }
+          {
+            "value": "top_left",
+            "label": "Sol üst"
+          },
+          {
+            "value": "top_right",
+            "label": "Sağ üst"
+          },
+          {
+            "value": "bottom_left",
+            "label": "Sol alt"
+          },
+          {
+            "value": "bottom_right",
+            "label": "Sağ alt"
+          }
         ]
       },
       {
@@ -558,11 +599,26 @@
         "default": "accent-1",
         "label": "İndirim rozet renk şeması",
         "options": [
-          { "value": "accent-1", "label": "Vurgu 1" },
-          { "value": "accent-2", "label": "Vurgu 2" },
-          { "value": "background-1", "label": "Arka plan 1" },
-          { "value": "background-2", "label": "Arka plan 2" },
-          { "value": "inverse", "label": "Ters" }
+          {
+            "value": "accent-1",
+            "label": "Vurgu 1"
+          },
+          {
+            "value": "accent-2",
+            "label": "Vurgu 2"
+          },
+          {
+            "value": "background-1",
+            "label": "Arka plan 1"
+          },
+          {
+            "value": "background-2",
+            "label": "Arka plan 2"
+          },
+          {
+            "value": "inverse",
+            "label": "Ters"
+          }
         ]
       },
       {
@@ -584,11 +640,26 @@
         "default": "inverse",
         "label": "Tükenmiş rozet renk şeması",
         "options": [
-          { "value": "accent-1", "label": "Vurgu 1" },
-          { "value": "accent-2", "label": "Vurgu 2" },
-          { "value": "background-1", "label": "Arka plan 1" },
-          { "value": "background-2", "label": "Arka plan 2" },
-          { "value": "inverse", "label": "Ters" }
+          {
+            "value": "accent-1",
+            "label": "Vurgu 1"
+          },
+          {
+            "value": "accent-2",
+            "label": "Vurgu 2"
+          },
+          {
+            "value": "background-1",
+            "label": "Arka plan 1"
+          },
+          {
+            "value": "background-2",
+            "label": "Arka plan 2"
+          },
+          {
+            "value": "inverse",
+            "label": "Ters"
+          }
         ]
       }
     ]
@@ -695,10 +766,22 @@
         "default": "accent-1",
         "label": "İkon vurgu rengi",
         "options": [
-          { "value": "accent-1", "label": "Vurgu 1" },
-          { "value": "accent-2", "label": "Vurgu 2" },
-          { "value": "outline-button", "label": "Çerçeveli düğme" },
-          { "value": "text", "label": "Metin" }
+          {
+            "value": "accent-1",
+            "label": "Vurgu 1"
+          },
+          {
+            "value": "accent-2",
+            "label": "Vurgu 2"
+          },
+          {
+            "value": "outline-button",
+            "label": "Çerçeveli düğme"
+          },
+          {
+            "value": "text",
+            "label": "Metin"
+          }
         ]
       }
     ]
@@ -706,6 +789,84 @@
   {
     "name": "Varyant Düğmeleri",
     "settings": [
+      {
+        "type": "header",
+        "content": "Renk"
+      },
+      {
+        "type": "select",
+        "id": "variant_pills_accent_color",
+        "label": "Renk",
+        "options": [
+          {
+            "value": "accent-1",
+            "label": "Vurgu 1"
+          },
+          {
+            "value": "accent-2",
+            "label": "Vurgu 2"
+          },
+          {
+            "value": "outline-button",
+            "label": "Çerçeveli düğme"
+          },
+          {
+            "value": "text",
+            "label": "Metin"
+          }
+        ],
+        "default": "text"
+      },
+      {
+        "type": "range",
+        "id": "variant_pills_inactive_overlay_opacity",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "default": 0,
+        "unit": "%",
+        "label": "Pasif düğme arka plan kaplama opaklığı"
+      },
+      {
+        "type": "header",
+        "content": "Metin ve boyut"
+      },
+      {
+        "type": "checkbox",
+        "id": "variant_pills_bold_text",
+        "default": false,
+        "label": "Kalın metin etkinleştir"
+      },
+      {
+        "type": "range",
+        "id": "variant_pills_text_size",
+        "min": 10,
+        "max": 20,
+        "step": 1,
+        "default": 14,
+        "unit": "px",
+        "label": "Metin boyutu"
+      },
+      {
+        "type": "range",
+        "id": "variant_pills_padding_y",
+        "min": 0,
+        "max": 20,
+        "step": 2,
+        "default": 10,
+        "unit": "px",
+        "label": "Üst ve alt dolgu"
+      },
+      {
+        "type": "range",
+        "id": "variant_pills_padding_x",
+        "min": 0,
+        "max": 40,
+        "step": 2,
+        "default": 20,
+        "unit": "px",
+        "label": "Yan dolgu"
+      },
       {
         "type": "header",
         "content": "Kenarlık"
@@ -791,6 +952,132 @@
     "settings": [
       {
         "type": "header",
+        "content": "Arka plan ve renk"
+      },
+      {
+        "type": "select",
+        "id": "pickers_color_scheme",
+        "label": "Arka plan rengi",
+        "options": [
+          {
+            "value": "accent-1",
+            "label": "Vurgu 1"
+          },
+          {
+            "value": "accent-2",
+            "label": "Vurgu 2"
+          },
+          {
+            "value": "background-1",
+            "label": "Arka plan 1"
+          },
+          {
+            "value": "background-2",
+            "label": "Arka plan 2"
+          },
+          {
+            "value": "inverse",
+            "label": "Metin"
+          }
+        ],
+        "default": "background-1"
+      },
+      {
+        "type": "select",
+        "id": "pickers_border_color",
+        "label": "Kenarlık rengi",
+        "options": [
+          {
+            "value": "accent-1",
+            "label": "Vurgu 1"
+          },
+          {
+            "value": "accent-2",
+            "label": "Vurgu 2"
+          },
+          {
+            "value": "background-1",
+            "label": "Arka plan 1"
+          },
+          {
+            "value": "background-2",
+            "label": "Arka plan 2"
+          },
+          {
+            "value": "text",
+            "label": "Metin"
+          }
+        ],
+        "default": "text"
+      },
+      {
+        "type": "select",
+        "id": "pickers_text_color",
+        "label": "Metin ve ok ikonu rengi",
+        "options": [
+          {
+            "value": "accent-1",
+            "label": "Vurgu 1"
+          },
+          {
+            "value": "accent-2",
+            "label": "Vurgu 2"
+          },
+          {
+            "value": "background-1",
+            "label": "Arka plan 1"
+          },
+          {
+            "value": "background-2",
+            "label": "Arka plan 2"
+          },
+          {
+            "value": "text",
+            "label": "Metin"
+          }
+        ],
+        "default": "text"
+      },
+      {
+        "type": "select",
+        "id": "pickers_overlay_color",
+        "label": "Kaplama rengi",
+        "options": [
+          {
+            "value": "accent-1",
+            "label": "Vurgu 1"
+          },
+          {
+            "value": "accent-2",
+            "label": "Vurgu 2"
+          },
+          {
+            "value": "background-1",
+            "label": "Arka plan 1"
+          },
+          {
+            "value": "background-2",
+            "label": "Arka plan 2"
+          },
+          {
+            "value": "text",
+            "label": "Metin"
+          }
+        ],
+        "default": "text"
+      },
+      {
+        "type": "range",
+        "id": "pickers_overlay_opacity",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "default": 0,
+        "unit": "%",
+        "label": "Arka plan kaplama opaklığı"
+      },
+      {
+        "type": "header",
         "content": "Kenarlık"
       },
       {
@@ -866,12 +1153,162 @@
         "default": 0,
         "unit": "px",
         "label": "Gölge bulanıklığı"
+      },
+      {
+        "type": "header",
+        "content": "Hover durumu"
+      },
+      {
+        "type": "range",
+        "id": "pickers_hover_overlay_opacity",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "default": 0,
+        "unit": "%",
+        "label": "Arka plan kaplama opaklığı"
+      },
+      {
+        "type": "range",
+        "id": "pickers_hover_border_opacity",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "default": 15,
+        "unit": "%",
+        "label": "Kenarlık opaklığı"
       }
     ]
   },
   {
     "name": "Miktar Seçicileri",
     "settings": [
+      {
+        "type": "header",
+        "content": "Arka plan ve renk"
+      },
+      {
+        "type": "select",
+        "id": "quantity_color_scheme",
+        "label": "Arka plan rengi",
+        "options": [
+          {
+            "value": "accent-1",
+            "label": "Vurgu 1"
+          },
+          {
+            "value": "accent-2",
+            "label": "Vurgu 2"
+          },
+          {
+            "value": "background-1",
+            "label": "Arka plan 1"
+          },
+          {
+            "value": "background-2",
+            "label": "Arka plan 2"
+          },
+          {
+            "value": "inverse",
+            "label": "Metin"
+          }
+        ],
+        "default": "background-1"
+      },
+      {
+        "type": "select",
+        "id": "quantity_border_color",
+        "label": "Kenarlık rengi",
+        "options": [
+          {
+            "value": "accent-1",
+            "label": "Vurgu 1"
+          },
+          {
+            "value": "accent-2",
+            "label": "Vurgu 2"
+          },
+          {
+            "value": "background-1",
+            "label": "Arka plan 1"
+          },
+          {
+            "value": "background-2",
+            "label": "Arka plan 2"
+          },
+          {
+            "value": "text",
+            "label": "Metin"
+          }
+        ],
+        "default": "text"
+      },
+      {
+        "type": "select",
+        "id": "quantity_text_color",
+        "label": "Sayı ve ikon rengi",
+        "options": [
+          {
+            "value": "accent-1",
+            "label": "Vurgu 1"
+          },
+          {
+            "value": "accent-2",
+            "label": "Vurgu 2"
+          },
+          {
+            "value": "background-1",
+            "label": "Arka plan 1"
+          },
+          {
+            "value": "background-2",
+            "label": "Arka plan 2"
+          },
+          {
+            "value": "text",
+            "label": "Metin"
+          }
+        ],
+        "default": "text"
+      },
+      {
+        "type": "select",
+        "id": "quantity_overlay_color",
+        "label": "Kaplama rengi",
+        "options": [
+          {
+            "value": "accent-1",
+            "label": "Vurgu 1"
+          },
+          {
+            "value": "accent-2",
+            "label": "Vurgu 2"
+          },
+          {
+            "value": "background-1",
+            "label": "Arka plan 1"
+          },
+          {
+            "value": "background-2",
+            "label": "Arka plan 2"
+          },
+          {
+            "value": "text",
+            "label": "Metin"
+          }
+        ],
+        "default": "text"
+      },
+      {
+        "type": "range",
+        "id": "quantity_overlay_opacity",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "default": 0,
+        "unit": "%",
+        "label": "Arka plan kaplama opaklığı"
+      },
       {
         "type": "header",
         "content": "Kenarlık"
@@ -949,6 +1386,30 @@
         "default": 0,
         "unit": "px",
         "label": "Gölge bulanıklığı"
+      },
+      {
+        "type": "header",
+        "content": "Hover durumu"
+      },
+      {
+        "type": "range",
+        "id": "quantity_hover_overlay_opacity",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "default": 0,
+        "unit": "%",
+        "label": "Arka plan kaplama opaklığı"
+      },
+      {
+        "type": "range",
+        "id": "quantity_hover_border_opacity",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "default": 15,
+        "unit": "%",
+        "label": "Kenarlık opaklığı"
       }
     ]
   },
@@ -1044,10 +1505,29 @@
         "default": "standard",
         "label": "Kart stili",
         "options": [
-          { "value": "standard", "label": "Standart" },
-          { "value": "card", "label": "Kart" },
-          { "value": "horizontal", "label": "Yatay" }
+          {
+            "value": "standard",
+            "label": "Standart"
+          },
+          {
+            "value": "card",
+            "label": "Kart"
+          },
+          {
+            "value": "horizontal",
+            "label": "Yatay"
+          }
         ]
+      },
+      {
+        "type": "range",
+        "id": "card_image_padding",
+        "min": 0,
+        "max": 20,
+        "step": 2,
+        "default": 0,
+        "unit": "px",
+        "label": "Görsel dolgusu"
       },
       {
         "type": "select",
@@ -1055,11 +1535,26 @@
         "default": "background-2",
         "label": "Kart renk şeması",
         "options": [
-          { "value": "accent-1", "label": "Vurgu 1" },
-          { "value": "accent-2", "label": "Vurgu 2" },
-          { "value": "background-1", "label": "Arka plan 1" },
-          { "value": "background-2", "label": "Arka plan 2" },
-          { "value": "inverse", "label": "Ters" }
+          {
+            "value": "accent-1",
+            "label": "Vurgu 1"
+          },
+          {
+            "value": "accent-2",
+            "label": "Vurgu 2"
+          },
+          {
+            "value": "background-1",
+            "label": "Arka plan 1"
+          },
+          {
+            "value": "background-2",
+            "label": "Arka plan 2"
+          },
+          {
+            "value": "inverse",
+            "label": "Ters"
+          }
         ]
       },
       {
@@ -1068,9 +1563,18 @@
         "default": "left",
         "label": "Metin hizalama",
         "options": [
-          { "value": "left", "label": "Sol" },
-          { "value": "center", "label": "Orta" },
-          { "value": "right", "label": "Sağ" }
+          {
+            "value": "left",
+            "label": "Sol"
+          },
+          {
+            "value": "center",
+            "label": "Orta"
+          },
+          {
+            "value": "right",
+            "label": "Sağ"
+          }
         ]
       },
       {
@@ -1079,10 +1583,22 @@
         "default": "adapt",
         "label": "Görsel oranı",
         "options": [
-          { "value": "adapt", "label": "Uyarlanabilir" },
-          { "value": "portrait", "label": "Portre" },
-          { "value": "square", "label": "Kare" },
-          { "value": "landscape", "label": "Yatay" }
+          {
+            "value": "adapt",
+            "label": "Uyarlanabilir"
+          },
+          {
+            "value": "portrait",
+            "label": "Portre"
+          },
+          {
+            "value": "square",
+            "label": "Kare"
+          },
+          {
+            "value": "landscape",
+            "label": "Yatay"
+          }
         ]
       },
       {
@@ -1194,15 +1710,56 @@
     "settings": [
       {
         "type": "select",
+        "id": "collection_card_style",
+        "default": "standard",
+        "label": "Kart stili",
+        "options": [
+          {
+            "value": "standard",
+            "label": "Standart"
+          },
+          {
+            "value": "card",
+            "label": "Kart"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "collection_card_image_padding",
+        "min": 0,
+        "max": 20,
+        "step": 2,
+        "default": 0,
+        "unit": "px",
+        "label": "Görsel dolgusu"
+      },
+      {
+        "type": "select",
         "id": "collection_card_color_scheme",
         "default": "background-2",
         "label": "Renk şeması",
         "options": [
-          { "value": "accent-1", "label": "Vurgu 1" },
-          { "value": "accent-2", "label": "Vurgu 2" },
-          { "value": "background-1", "label": "Arka plan 1" },
-          { "value": "background-2", "label": "Arka plan 2" },
-          { "value": "inverse", "label": "Ters" }
+          {
+            "value": "accent-1",
+            "label": "Vurgu 1"
+          },
+          {
+            "value": "accent-2",
+            "label": "Vurgu 2"
+          },
+          {
+            "value": "background-1",
+            "label": "Arka plan 1"
+          },
+          {
+            "value": "background-2",
+            "label": "Arka plan 2"
+          },
+          {
+            "value": "inverse",
+            "label": "Ters"
+          }
         ]
       },
       {
@@ -1211,9 +1768,18 @@
         "default": "center",
         "label": "Metin hizalama",
         "options": [
-          { "value": "left", "label": "Sol" },
-          { "value": "center", "label": "Orta" },
-          { "value": "right", "label": "Sağ" }
+          {
+            "value": "left",
+            "label": "Sol"
+          },
+          {
+            "value": "center",
+            "label": "Orta"
+          },
+          {
+            "value": "right",
+            "label": "Sağ"
+          }
         ]
       },
       {
@@ -1262,6 +1828,26 @@
       },
       {
         "type": "range",
+        "id": "collection_card_shadow_horizontal_offset",
+        "min": -40,
+        "max": 40,
+        "step": 2,
+        "default": 0,
+        "unit": "px",
+        "label": "Yatay gölge ofseti"
+      },
+      {
+        "type": "range",
+        "id": "collection_card_shadow_vertical_offset",
+        "min": -40,
+        "max": 40,
+        "step": 2,
+        "default": 0,
+        "unit": "px",
+        "label": "Dikey gölge ofseti"
+      },
+      {
+        "type": "range",
         "id": "collection_card_shadow_blur",
         "min": 0,
         "max": 20,
@@ -1277,16 +1863,101 @@
     "settings": [
       {
         "type": "select",
+        "id": "blog_card_style",
+        "default": "standard",
+        "label": "Kart stili",
+        "options": [
+          {
+            "value": "standard",
+            "label": "Standart"
+          },
+          {
+            "value": "card",
+            "label": "Kart"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "blog_card_image_padding",
+        "min": 0,
+        "max": 20,
+        "step": 2,
+        "default": 0,
+        "unit": "px",
+        "label": "Görsel dolgusu"
+      },
+      {
+        "type": "select",
+        "id": "blog_card_text_alignment",
+        "default": "left",
+        "label": "Metin hizalama",
+        "options": [
+          {
+            "value": "left",
+            "label": "Sol"
+          },
+          {
+            "value": "center",
+            "label": "Orta"
+          },
+          {
+            "value": "right",
+            "label": "Sağ"
+          }
+        ]
+      },
+      {
+        "type": "select",
         "id": "blog_card_color_scheme",
         "default": "background-2",
         "label": "Renk şeması",
         "options": [
-          { "value": "accent-1", "label": "Vurgu 1" },
-          { "value": "accent-2", "label": "Vurgu 2" },
-          { "value": "background-1", "label": "Arka plan 1" },
-          { "value": "background-2", "label": "Arka plan 2" },
-          { "value": "inverse", "label": "Ters" }
+          {
+            "value": "accent-1",
+            "label": "Vurgu 1"
+          },
+          {
+            "value": "accent-2",
+            "label": "Vurgu 2"
+          },
+          {
+            "value": "background-1",
+            "label": "Arka plan 1"
+          },
+          {
+            "value": "background-2",
+            "label": "Arka plan 2"
+          },
+          {
+            "value": "inverse",
+            "label": "Ters"
+          }
         ]
+      },
+      {
+        "type": "header",
+        "content": "Kenarlık"
+      },
+      {
+        "type": "range",
+        "id": "blog_card_border_thickness",
+        "min": 0,
+        "max": 24,
+        "step": 1,
+        "default": 0,
+        "unit": "px",
+        "label": "Kenarlık kalınlığı"
+      },
+      {
+        "type": "range",
+        "id": "blog_card_border_opacity",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "default": 0,
+        "unit": "%",
+        "label": "Kenarlık opaklığı"
       },
       {
         "type": "range",
@@ -1297,6 +1968,10 @@
         "default": 8,
         "unit": "px",
         "label": "Köşe yarıçapı"
+      },
+      {
+        "type": "header",
+        "content": "Gölge"
       },
       {
         "type": "range",
@@ -1310,10 +1985,30 @@
       },
       {
         "type": "range",
+        "id": "blog_card_shadow_horizontal_offset",
+        "min": -40,
+        "max": 40,
+        "step": 2,
+        "default": 0,
+        "unit": "px",
+        "label": "Yatay gölge ofseti"
+      },
+      {
+        "type": "range",
+        "id": "blog_card_shadow_vertical_offset",
+        "min": -40,
+        "max": 40,
+        "step": 2,
+        "default": 0,
+        "unit": "px",
+        "label": "Dikey gölge ofseti"
+      },
+      {
+        "type": "range",
         "id": "blog_card_shadow_blur",
         "min": 0,
-        "max": 20,
-        "step": 2,
+        "max": 40,
+        "step": 5,
         "default": 0,
         "unit": "px",
         "label": "Gölge bulanıklığı"
@@ -1491,6 +2186,16 @@
     "settings": [
       {
         "type": "range",
+        "id": "popup_border_thickness",
+        "min": 0,
+        "max": 24,
+        "step": 1,
+        "default": 1,
+        "unit": "px",
+        "label": "Kenarlık kalınlığı"
+      },
+      {
+        "type": "range",
         "id": "popup_corner_radius",
         "min": 0,
         "max": 40,
@@ -1551,6 +2256,34 @@
     "name": "Çekmeceler",
     "settings": [
       {
+        "type": "header",
+        "content": "Kenarlık"
+      },
+      {
+        "type": "range",
+        "id": "drawer_border_thickness",
+        "min": 0,
+        "max": 24,
+        "step": 1,
+        "default": 1,
+        "unit": "px",
+        "label": "Kenarlık kalınlığı"
+      },
+      {
+        "type": "range",
+        "id": "drawer_border_opacity",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "default": 10,
+        "unit": "%",
+        "label": "Kenarlık opaklığı"
+      },
+      {
+        "type": "header",
+        "content": "Genel"
+      },
+      {
         "type": "range",
         "id": "drawer_width",
         "min": 250,
@@ -1582,8 +2315,14 @@
         "default": "slide",
         "label": "Animasyon",
         "options": [
-          { "value": "slide", "label": "Kayma" },
-          { "value": "fade", "label": "Solma" }
+          {
+            "value": "slide",
+            "label": "Kayma"
+          },
+          {
+            "value": "fade",
+            "label": "Solma"
+          }
         ]
       }
     ]
@@ -1597,9 +2336,18 @@
         "default": "round",
         "label": "Örnek stili",
         "options": [
-          { "value": "round", "label": "Yuvarlak" },
-          { "value": "square", "label": "Kare" },
-          { "value": "square-rounded", "label": "Yuvarlatılmış kare" }
+          {
+            "value": "round",
+            "label": "Yuvarlak"
+          },
+          {
+            "value": "square",
+            "label": "Kare"
+          },
+          {
+            "value": "square-rounded",
+            "label": "Yuvarlatılmış kare"
+          }
         ]
       },
       {
@@ -1608,10 +2356,29 @@
         "default": "medium",
         "label": "Örnek boyutu",
         "options": [
-          { "value": "small", "label": "Küçük" },
-          { "value": "medium", "label": "Orta" },
-          { "value": "large", "label": "Büyük" }
+          {
+            "value": "small",
+            "label": "Küçük"
+          },
+          {
+            "value": "medium",
+            "label": "Orta"
+          },
+          {
+            "value": "large",
+            "label": "Büyük"
+          }
         ]
+      },
+      {
+        "type": "range",
+        "id": "swatches_selected_border_opacity",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "default": 50,
+        "unit": "%",
+        "label": "Seçili örnek dış kenarlık opaklığı"
       },
       {
         "type": "textarea",
@@ -1663,6 +2430,11 @@
         "type": "text",
         "id": "social_snapchat_link",
         "label": "Snapchat"
+      },
+      {
+        "type": "text",
+        "id": "social_tumblr_link",
+        "label": "Tumblr"
       },
       {
         "type": "checkbox",
@@ -1717,9 +2489,18 @@
         "default": "product",
         "label": "Arama türü",
         "options": [
-          { "value": "product", "label": "Sadece ürünler" },
-          { "value": "product,article", "label": "Ürünler ve makaleler" },
-          { "value": "product,article,page", "label": "Ürünler, makaleler ve sayfalar" }
+          {
+            "value": "product",
+            "label": "Sadece ürünler"
+          },
+          {
+            "value": "product,article",
+            "label": "Ürünler ve makaleler"
+          },
+          {
+            "value": "product,article,page",
+            "label": "Ürünler, makaleler ve sayfalar"
+          }
         ]
       },
       {
@@ -1757,9 +2538,18 @@
         "default": "drawer",
         "label": "Sepet türü",
         "options": [
-          { "value": "drawer", "label": "Çekmece" },
-          { "value": "page", "label": "Sayfa" },
-          { "value": "notification", "label": "Bildirim" }
+          {
+            "value": "drawer",
+            "label": "Çekmece"
+          },
+          {
+            "value": "page",
+            "label": "Sayfa"
+          },
+          {
+            "value": "notification",
+            "label": "Bildirim"
+          }
         ]
       },
       {
@@ -1853,6 +2643,54 @@
         "default": 4,
         "unit": "px",
         "label": "Tutamaç köşe yarıçapı"
+      }
+    ]
+  },
+  {
+    "name": "Güvenlik",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "disable_inspect",
+        "label": "Metin kopyalamayı, görsel indirmeyi ve Inspect elementi devre dışı bırak",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Ülke engelleyici"
+      },
+      {
+        "type": "paragraph",
+        "content": "Hedeflemediğiniz ülkelerden mağazanıza erişimi engelleyerek rakiplerinizin ziyaretlerini azaltın."
+      },
+      {
+        "type": "select",
+        "id": "country_list_function",
+        "label": "Ülke listesi işlevi",
+        "options": [
+          {
+            "value": "block",
+            "label": "Engelle"
+          },
+          {
+            "value": "whitelist",
+            "label": "Beyaz liste"
+          }
+        ],
+        "info": "\"Engelle\" listedeki ülkeleri engeller, \"Beyaz liste\" yalnızca listedeki ülkelere izin verir.",
+        "default": "block"
+      },
+      {
+        "type": "text",
+        "id": "country_list",
+        "label": "Ülke kodları listesi",
+        "info": "Alpha-2 formatında ülke kodları, virgülle ayırın. Örnek: \"US, GB\""
+      },
+      {
+        "type": "richtext",
+        "id": "country_invalid_error_msg",
+        "label": "Geçersiz ülke hata mesajı",
+        "default": "<h2>Maalesef bu mağaza ülkenizde kullanılamıyor.</h2>"
       }
     ]
   }

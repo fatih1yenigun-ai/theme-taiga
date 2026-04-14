@@ -1,0 +1,495 @@
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    --section-padding-top: {{ section.settings.padding_top }}px;
+    --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --section-heading-size: {{ section.settings.heading_size }}px;
+    --section-columns: {{ section.settings.columns }};
+    --section-gap: {{ section.settings.gap }}px;
+  }
+{%- endstyle -%}
+
+{% render 'section-custom-scheme-style', section: section %}
+
+<section
+  id="shopify-section-{{ section.id }}"
+  class="section-padding color-{{ section.settings.color_scheme }}"
+>
+  <div class="page-width">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="gallery__heading" style="font-size: var(--section-heading-size);">
+        {{ section.settings.heading | escape }}
+      </h2>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="gallery__grid" role="list">
+        {%- for block in section.blocks -%}
+          <button
+            class="gallery__item"
+            type="button"
+            role="listitem"
+            aria-label="{{ block.settings.title | default: 'Görseli büyüt' | escape }}"
+            data-gallery-index="{{ forloop.index0 }}"
+            {{ block.shopify_attributes }}
+          >
+            {%- if block.settings.image != blank -%}
+              <img
+                class="gallery__image"
+                src="{{ block.settings.image | image_url: width: 600 }}"
+                srcset="
+                  {{ block.settings.image | image_url: width: 400 }} 400w,
+                  {{ block.settings.image | image_url: width: 600 }} 600w
+                "
+                sizes="(max-width: 749px) 50vw, calc(100vw / {{ section.settings.columns }})"
+                alt="{{ block.settings.title | escape }}"
+                width="600"
+                height="600"
+                loading="lazy"
+              >
+            {%- else -%}
+              <div class="gallery__placeholder">
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              </div>
+            {%- endif -%}
+
+            {%- if block.settings.title != blank -%}
+              <div class="gallery__caption">
+                <span class="gallery__title">{{ block.settings.title | escape }}</span>
+                {%- if block.settings.caption != blank -%}
+                  <span class="gallery__text">{{ block.settings.caption | escape }}</span>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          </button>
+        {%- endfor -%}
+      </div>
+
+      {%- comment -%} Lightbox modal {%- endcomment -%}
+      <div class="gallery__lightbox" role="dialog" aria-modal="true" aria-label="Galeri" hidden>
+        <div class="gallery__lightbox-overlay"></div>
+        <button class="gallery__lightbox-close" type="button" aria-label="Kapat">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+        <button class="gallery__lightbox-prev" type="button" aria-label="Önceki">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="gallery__lightbox-next" type="button" aria-label="Sonraki">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 6 15 12 9 18"/></svg>
+        </button>
+        <div class="gallery__lightbox-content">
+          <img class="gallery__lightbox-image" src="" alt="">
+          <div class="gallery__lightbox-info">
+            <span class="gallery__lightbox-title"></span>
+            <span class="gallery__lightbox-caption"></span>
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} .section-padding {
+    padding-top: var(--section-padding-top);
+    padding-bottom: var(--section-padding-bottom);
+  }
+
+  #shopify-section-{{ section.id }} .gallery__heading {
+    color: rgb(var(--color-foreground));
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    text-align: center;
+    margin: 0 0 48px;
+  }
+
+  #shopify-section-{{ section.id }} .gallery__grid {
+    display: grid;
+    grid-template-columns: repeat(var(--section-columns, 3), 1fr);
+    gap: var(--section-gap, 12px);
+  }
+
+  #shopify-section-{{ section.id }} .gallery__item {
+    position: relative;
+    overflow: hidden;
+    border: none;
+    padding: 0;
+    margin: 0;
+    background: none;
+    cursor: pointer;
+    aspect-ratio: 1 / 1;
+    display: block;
+  }
+
+  #shopify-section-{{ section.id }} .gallery__item:focus-visible {
+    outline: 2px solid rgb(var(--color-foreground));
+    outline-offset: 2px;
+  }
+
+  #shopify-section-{{ section.id }} .gallery__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  #shopify-section-{{ section.id }} .gallery__item:hover .gallery__image {
+    transform: scale(1.04);
+  }
+
+  #shopify-section-{{ section.id }} .gallery__placeholder {
+    width: 100%;
+    height: 100%;
+    background: rgba(var(--color-foreground), 0.04);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #shopify-section-{{ section.id }} .gallery__placeholder svg {
+    width: 40%;
+    opacity: 0.2;
+  }
+
+  #shopify-section-{{ section.id }} .gallery__caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 16px;
+    background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  #shopify-section-{{ section.id }} .gallery__item:hover .gallery__caption {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  #shopify-section-{{ section.id }} .gallery__title {
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  #shopify-section-{{ section.id }} .gallery__text {
+    color: rgba(255,255,255,0.75);
+    font-size: 12px;
+    margin-top: 2px;
+  }
+
+  /* Lightbox */
+  #shopify-section-{{ section.id }} .gallery__lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #shopify-section-{{ section.id }} .gallery__lightbox[hidden] {
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .gallery__lightbox-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.9);
+  }
+
+  #shopify-section-{{ section.id }} .gallery__lightbox-close,
+  #shopify-section-{{ section.id }} .gallery__lightbox-prev,
+  #shopify-section-{{ section.id }} .gallery__lightbox-next {
+    position: absolute;
+    z-index: 2;
+    background: none;
+    border: none;
+    color: #FFFFFF;
+    cursor: pointer;
+    padding: 12px;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+  }
+
+  #shopify-section-{{ section.id }} .gallery__lightbox-close:hover,
+  #shopify-section-{{ section.id }} .gallery__lightbox-prev:hover,
+  #shopify-section-{{ section.id }} .gallery__lightbox-next:hover {
+    opacity: 1;
+  }
+
+  #shopify-section-{{ section.id }} .gallery__lightbox-close:focus-visible,
+  #shopify-section-{{ section.id }} .gallery__lightbox-prev:focus-visible,
+  #shopify-section-{{ section.id }} .gallery__lightbox-next:focus-visible {
+    outline: 2px solid #FFFFFF;
+    outline-offset: 2px;
+  }
+
+  #shopify-section-{{ section.id }} .gallery__lightbox-close { top: 16px; right: 16px; }
+  #shopify-section-{{ section.id }} .gallery__lightbox-prev { left: 16px; top: 50%; transform: translateY(-50%); }
+  #shopify-section-{{ section.id }} .gallery__lightbox-next { right: 16px; top: 50%; transform: translateY(-50%); }
+
+  #shopify-section-{{ section.id }} .gallery__lightbox-content {
+    position: relative;
+    z-index: 1;
+    max-width: 90vw;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #shopify-section-{{ section.id }} .gallery__lightbox-image {
+    max-width: 100%;
+    max-height: 75vh;
+    object-fit: contain;
+    display: block;
+  }
+
+  #shopify-section-{{ section.id }} .gallery__lightbox-info {
+    text-align: center;
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  #shopify-section-{{ section.id }} .gallery__lightbox-title {
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  #shopify-section-{{ section.id }} .gallery__lightbox-caption {
+    color: rgba(255,255,255,0.65);
+    font-size: 14px;
+  }
+
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section.id }} .gallery__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    #shopify-section-{{ section.id }} .gallery__heading {
+      font-size: calc(var(--section-heading-size) * 0.7) !important;
+    }
+  }
+</style>
+
+<script>
+  (function() {
+    const section = document.getElementById('shopify-section-{{ section.id }}');
+    if (!section) return;
+
+    const items = section.querySelectorAll('.gallery__item');
+    const lightbox = section.querySelector('.gallery__lightbox');
+    if (!lightbox || items.length === 0) return;
+
+    const lbImage = lightbox.querySelector('.gallery__lightbox-image');
+    const lbTitle = lightbox.querySelector('.gallery__lightbox-title');
+    const lbCaption = lightbox.querySelector('.gallery__lightbox-caption');
+    const closeBtn = lightbox.querySelector('.gallery__lightbox-close');
+    const prevBtn = lightbox.querySelector('.gallery__lightbox-prev');
+    const nextBtn = lightbox.querySelector('.gallery__lightbox-next');
+    const overlay = lightbox.querySelector('.gallery__lightbox-overlay');
+
+    let current = 0;
+
+    function getData(index) {
+      const item = items[index];
+      const img = item.querySelector('.gallery__image');
+      return {
+        src: img ? img.src.replace(/width=\d+/, 'width=1200') : '',
+        alt: img ? img.alt : '',
+        title: item.querySelector('.gallery__title') ? item.querySelector('.gallery__title').textContent : '',
+        caption: item.querySelector('.gallery__text') ? item.querySelector('.gallery__text').textContent : ''
+      };
+    }
+
+    function show(index) {
+      current = (index + items.length) % items.length;
+      const data = getData(current);
+      lbImage.src = data.src;
+      lbImage.alt = data.alt;
+      lbTitle.textContent = data.title;
+      lbCaption.textContent = data.caption;
+      lightbox.hidden = false;
+      document.body.style.overflow = 'hidden';
+      closeBtn.focus();
+    }
+
+    function hide() {
+      lightbox.hidden = true;
+      document.body.style.overflow = '';
+      items[current].focus();
+    }
+
+    items.forEach(function(item) {
+      item.addEventListener('click', function() {
+        show(parseInt(this.dataset.galleryIndex, 10));
+      });
+    });
+
+    closeBtn.addEventListener('click', hide);
+    overlay.addEventListener('click', hide);
+    prevBtn.addEventListener('click', function() { show(current - 1); });
+    nextBtn.addEventListener('click', function() { show(current + 1); });
+
+    lightbox.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') hide();
+      if (e.key === 'ArrowLeft') show(current - 1);
+      if (e.key === 'ArrowRight') show(current + 1);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Galeri",
+  "tag": "section",
+  "class": "section-gallery-lightbox",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Başlık",
+      "default": "Galeri"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Başlık Boyutu",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Sütun Sayısı",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Boşluk",
+      "min": 4,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Renk Şeması",
+      "options": [
+        { "value": "background-1", "label": "Arka Plan 1" },
+        { "value": "background-2", "label": "Arka Plan 2" },
+        { "value": "accent-1", "label": "Vurgu 1" },
+        { "value": "accent-2", "label": "Vurgu 2" },
+        { "value": "inverse", "label": "Ters" },
+        { "value": "custom", "label": "Özel" }
+      ],
+      "default": "background-1"
+    },
+    {
+      "type": "color",
+      "id": "custom_bg_color",
+      "label": "Özel Arka Plan Rengi",
+      "default": "#FFFFFF",
+      "info": "Yalnızca 'Özel' renk şeması seçildiğinde etkindir"
+    },
+    {
+      "type": "color",
+      "id": "custom_text_color",
+      "label": "Özel Metin Rengi",
+      "default": "#1a1a1a",
+      "info": "Yalnızca 'Özel' renk şeması seçildiğinde etkindir"
+    },
+    {
+      "type": "color",
+      "id": "custom_accent_color",
+      "label": "Özel Vurgu Rengi",
+      "default": "#333333",
+      "info": "Yalnızca 'Özel' renk şeması seçildiğinde etkindir"
+    },
+    {
+      "type": "color",
+      "id": "custom_button_label_color",
+      "label": "Özel Buton Metin Rengi",
+      "default": "#FFFFFF",
+      "info": "Yalnızca 'Özel' renk şeması seçildiğinde etkindir"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Üst Boşluk",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Alt Boşluk",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "gallery_image",
+      "name": "Görsel",
+      "limit": 12,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Görsel"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Başlık",
+          "default": "Görsel Başlığı"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Açıklama"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "Galeri",
+      "blocks": [
+        { "type": "gallery_image", "settings": { "title": "Proje 1", "caption": "Stüdyo çalışması" } },
+        { "type": "gallery_image", "settings": { "title": "Proje 2", "caption": "Doğal ışık serisi" } },
+        { "type": "gallery_image", "settings": { "title": "Proje 3", "caption": "Portre çekimi" } },
+        { "type": "gallery_image", "settings": { "title": "Proje 4", "caption": "Ürün fotoğrafı" } },
+        { "type": "gallery_image", "settings": { "title": "Proje 5", "caption": "Mimari detay" } },
+        { "type": "gallery_image", "settings": { "title": "Proje 6", "caption": "Sokak fotoğrafçılığı" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
