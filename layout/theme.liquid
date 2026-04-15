@@ -148,10 +148,10 @@
       --variant-pills-padding-x: {{ settings.variant_pills_padding_x }}px;
 
       /* === Variant dropdowns === */
-      --pickers-radius: {{ settings.pickers_radius }}px;
-      --pickers-border-width: {{ settings.pickers_border_thickness }}px;
-      --pickers-border-opacity: {{ settings.pickers_border_opacity | times: 1.0 | divided_by: 100.0 }};
-      --pickers-shadow: {{ settings.pickers_shadow_horizontal_offset }}px {{ settings.pickers_shadow_vertical_offset }}px {{ settings.pickers_shadow_blur }}px rgba(var(--color-foreground), {{ settings.pickers_shadow_opacity | times: 1.0 | divided_by: 100.0 }});
+      --pickers-radius: {{ settings.variant_dropdowns_radius }}px;
+      --pickers-border-width: {{ settings.variant_dropdowns_border_thickness }}px;
+      --pickers-border-opacity: {{ settings.variant_dropdowns_border_opacity | times: 1.0 | divided_by: 100.0 }};
+      --pickers-shadow: {{ settings.variant_dropdowns_shadow_horizontal_offset }}px {{ settings.variant_dropdowns_shadow_vertical_offset }}px {{ settings.variant_dropdowns_shadow_blur }}px rgba(var(--color-foreground), {{ settings.variant_dropdowns_shadow_opacity | times: 1.0 | divided_by: 100.0 }});
       --pickers-overlay-opacity: {{ settings.pickers_overlay_opacity | times: 1.0 | divided_by: 100.0 }};
       --pickers-hover-overlay-opacity: {{ settings.pickers_hover_overlay_opacity | times: 1.0 | divided_by: 100.0 }};
       --pickers-hover-border-opacity: {{ settings.pickers_hover_border_opacity | times: 1.0 | divided_by: 100.0 }};
