@@ -59,7 +59,7 @@
     {% endif %}
   </style>
 
-  {% style %}
+  <style>
     :root {
       /* === Font families === */
       --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
@@ -212,7 +212,7 @@
       --animation-delay: {{ settings.animation_init_delay }}ms;
       --animation-children-delay: {{ settings.animation_children_delay }}ms;
     }
-  {% endstyle %}
+  </style>
 </head>
 
 <body class="gradient color-background-1">
